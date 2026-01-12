@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brzi Kviz - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/create-quiz.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>⚡ Brzi Kviz</h1>
+                <p>Kreiraj kviz bez PDF-a - samo unesi temu i broj pitanja</p>
+            </div>
+
+            <div class="quiz-form-container">
+                <form id="quickQuizForm" class="quiz-form">
+                    <div class="form-section">
+                        <label for="quizTopic">Tema Kviza *</label>
+                        <input 
+                            type="text" 
+                            id="quizTopic" 
+                            name="topic" 
+                            placeholder="npr. Istorija Srbije, Matematika, Programiranje..."
+                            required
+                        >
+                        <small>Unesite temu o kojoj želite da generišete pitanja</small>
+                    </div>
+
+                    <div class="form-section">
+                        <label for="numQuestions">Broj Pitanja *</label>
+                        <input 
+                            type="number" 
+                            id="numQuestions" 
+                            name="numQuestions" 
+                            min="1" 
+                            max="50" 
+                            value="10"
+                            required
+                        >
+                        <small>Odaberite koliko pitanja želite (1-50)</small>
+                    </div>
+
+                    <div class="form-section">
+                        <label for="difficulty">Težina</label>
+                        <select id="difficulty" name="difficulty" class="filter-select">
+                            <option value="easy">Lako</option>
+                            <option value="medium" selected>Srednje</option>
+                            <option value="hard">Teško</option>
+                        </select>
+                        <small>Odaberite nivo težine pitanja</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="generateQuizBtn" class="btn btn-primary">Generiši Kviz</button>
+                        <a href="create-quiz.html" class="btn btn-secondary">Nazad</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/quick-quiz.js"></script>
+</body>
+</html>
+

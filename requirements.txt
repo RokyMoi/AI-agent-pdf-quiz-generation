@@ -1,0 +1,38 @@
+# PDF QuizMaster AI - Dependencies
+# =================================
+
+# PDF Processing
+pdfplumber>=0.10.0
+PyPDF2>=3.0.0
+
+# AI/LLM - Google Gemini
+google-generativeai>=0.3.0
+
+# UI
+gradio
+flask
+flask-cors>=4.0.0
+
+# Data Processing
+numpy>=1.24.0
+
+# Optional: Embeddings (za velike PDF-ove)
+sentence-transformers>=2.2.0
+
+# Charts and Export
+matplotlib>=3.7.0
+reportlab>=4.0.0
+
+# Google Gemini (opciono)
+google-generativeai>=0.3.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Authentication
+bcrypt>=4.0.0
+PyJWT>=2.8.0
+
+# Logging (built-in, ali možda treba dodatna konfiguracija)
+# logging je ugrađen u Python
+

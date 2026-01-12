@@ -1,0 +1,204 @@
+/* Console Manager CSS */
+/* =================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: transparent;
+    background-image: url('../assets/art-2560x1080-z3p1ahko27nkit77.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #00ff00;
+    min-height: 100vh;
+}
+
+.console-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #000000;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #00ff00;
+}
+
+.console-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.console-icon {
+    font-size: 2rem;
+}
+
+.console-title h1 {
+    color: #00ff00;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.console-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.status-dot.complete {
+    background: #00ff00;
+    animation: none;
+}
+
+.status-dot.error {
+    background: #ff0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    animation: none;
+}
+
+#statusText {
+    color: #00ff00;
+    font-weight: 600;
+}
+
+.console-output {
+    background: #0a0a0a;
+    border: 1px solid #00ff00;
+    border-radius: 4px;
+    padding: 1.5rem;
+    min-height: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.console-line {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.console-prompt {
+    color: #00ff00;
+    font-weight: 700;
+}
+
+.console-text {
+    color: #00ff00;
+    flex: 1;
+}
+
+.console-text.success {
+    color: #00ff00;
+}
+
+.console-text.error {
+    color: #ff0000;
+}
+
+.console-text.info {
+    color: #00aaff;
+}
+
+.console-text.warning {
+    color: #ffaa00;
+}
+
+.console-progress {
+    margin-top: 2rem;
+}
+
+.progress-bar-wrapper {
+    width: 100%;
+    height: 20px;
+    background: #0a0a0a;
+    border: 1px solid #00ff00;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff00 0%, #00aa00 100%);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    color: #00ff00;
+    font-size: 0.9rem;
+}
+
+/* Scrollbar styling */
+.console-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.console-output::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+.console-output::-webkit-scrollbar-thumb {
+    background: #00ff00;
+    border-radius: 4px;
+}
+
+.console-output::-webkit-scrollbar-thumb:hover {
+    background: #00aa00;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .console-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    .console-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+

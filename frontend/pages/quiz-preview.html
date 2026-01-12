@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Kviza - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/create-quiz.css">
+    <script src="../scripts/theme-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 id="quizTitle">👁️ Preview Kviza</h1>
+                <p id="quizSubtitle">Pregledajte generisani kviz pre nego što ga sačuvate</p>
+            </div>
+
+            <div class="quiz-form-container">
+                <div id="questionsPreview" class="questions-preview">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+
+                <div class="form-actions" style="margin-top: 2rem;">
+                    <button id="saveQuizBtn" class="btn btn-primary">💾 Sačuvaj Kviz</button>
+                    <a href="create-quiz.html" class="btn btn-secondary">Nazad</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/quiz-preview.js"></script>
+</body>
+</html>
+

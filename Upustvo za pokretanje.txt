@@ -1,0 +1,14 @@
+Pokrenite start_api, otvorit ce se Google Chrome stranica te pokrenut ce se zajedno REST API,
+za koristenje morat cete se registrovati (JWT Implementiran).
+- Kreiraj kviz se sastoji: 
+- PDF Kreiranja kviza - Kreira kviz iz vaseg PDF Materijala (Prije je trebalo 10 tak, sada se sve obavi  u roku od minut)
+-Brzi kviz, napisete temu te na osnovu temu vam kreira kviz.
+Posle svakog kreiranja kviz moguce je pregledati tj ima ugradjeni preview.
+Pregledajte settings - Imate mogucnost da promjenite temu sajta.
+My Quiz - Kvizovi koje ste vi napravili te mozete raditi
+- LeaderBoards - Ljestvica najboljih, prema procentu i broj kviza.
+- Kvizovi drugih osoba - Kvizovi koji su kreirali drugi korisnici.
+- Implementacija RL - Kada segmentirate ako ste los procenat imali na drugim kvizovima, birat ce laksa pitanja za generisanja kviza
+iz pdf materijala (Radi za PDF generisanje) 
+Na brzom kvizu sami birate tezinu.
+

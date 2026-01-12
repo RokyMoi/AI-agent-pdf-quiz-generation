@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - PDF QuizMaster AI</title>
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/profile.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="brand-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link active">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <span id="avatarInitial">U</span>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="profileUsername">Korisnik</h1>
+                        <p id="profileEmail">email@example.com</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="statQuizzes">0</span>
+                                <span class="stat-label">Kvizova</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="statScore">0</span>
+                                <span class="stat-label">Score</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="statAccuracy">0%</span>
+                                <span class="stat-label">Tačnost</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="info">Informacije</button>
+                    <button class="tab-btn" data-tab="results">Rezultati</button>
+                    <button class="tab-btn" data-tab="settings">Podešavanja</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Info Tab -->
+                    <div id="infoTab" class="tab-panel active">
+                        <div class="info-section">
+                            <h2>Lični Podaci</h2>
+                            <div class="info-item">
+                                <label>Korisničko ime:</label>
+                                <span id="infoUsername">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email:</label>
+                                <span id="infoEmail">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Član od:</label>
+                                <span id="infoJoined">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Tab -->
+                    <div id="resultsTab" class="tab-panel">
+                        <h2>Moji Rezultati</h2>
+                        <div id="resultsList" class="results-list">
+                            <p class="loading">Učitavanje rezultata...</p>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settingsTab" class="tab-panel">
+                        <h2>Podešavanja</h2>
+                        <form id="settingsForm" class="settings-form">
+                            <div class="form-group">
+                                <label for="changePassword">Promeni Lozinku</label>
+                                <input type="password" id="oldPassword" placeholder="Stara lozinka">
+                                <input type="password" id="newPassword" placeholder="Nova lozinka">
+                                <input type="password" id="confirmNewPassword" placeholder="Potvrda nove lozinke">
+                                <button type="button" class="btn btn-primary" id="changePasswordBtn">Promeni Lozinku</button>
+                            </div>
+                            
+                            <!-- Theme Selection -->
+                            <div class="form-group theme-section">
+                                <label>Izaberite Temu</label>
+                                <p class="theme-description">Odaberite boju gradijenta koji vam se najviše sviđa</p>
+                                <div class="theme-grid">
+                                    <div class="theme-option" data-theme="red-dark">
+                                        <div class="theme-preview red-dark-gradient"></div>
+                                        <span class="theme-name">Crvena Tamna</span>
+                                    </div>
+                                    <div class="theme-option" data-theme="blue-dark">
+                                        <div class="theme-preview blue-dark-gradient"></div>
+                                        <span class="theme-name">Plava Tamna</span>
+                                    </div>
+                                    <div class="theme-option" data-theme="purple-dark">
+                                        <div class="theme-preview purple-dark-gradient"></div>
+                                        <span class="theme-name">Ljubičasta Tamna</span>
+                                    </div>
+                                    <div class="theme-option" data-theme="green-dark">
+                                        <div class="theme-preview green-dark-gradient"></div>
+                                        <span class="theme-name">Zelena Tamna</span>
+                                    </div>
+                                    <div class="theme-option" data-theme="orange-dark">
+                                        <div class="theme-preview orange-dark-gradient"></div>
+                                        <span class="theme-name">Narandžasta Tamna</span>
+                                    </div>
+                                    <div class="theme-option" data-theme="pink-dark">
+                                        <div class="theme-preview pink-dark-gradient"></div>
+                                        <span class="theme-name">Roze Tamna</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        console.log('🔴 PROFILE.HTML - Script tagovi se učitavaju...');
+        console.log('🔴 PROFILE.HTML - localStorage userData:', localStorage.getItem('userData'));
+        console.log('🔴 PROFILE.HTML - localStorage userId:', localStorage.getItem('userId'));
+    </script>
+    <script src="../scripts/theme-manager.js" onerror="console.error('❌ GREŠKA: theme-manager.js se ne može učitati!')"></script>
+    <script src="../scripts/common.js" onerror="console.error('❌ GREŠKA: common.js se ne može učitati!')"></script>
+    <script src="../scripts/profile.js" 
+            onerror="console.error('❌ GREŠKA: profile.js se ne može učitati!', event); console.error('Error details:', event.target.src);" 
+            onload="console.log('✅ PROFILE.JS je uspešno učitan!'); console.log('loadProfile:', typeof loadProfile); console.log('window.loadProfile:', typeof window.loadProfile);"></script>
+    <script>
+        // Sačekaj malo da se svi scriptovi učitaju
+        setTimeout(function() {
+            console.log('🔴 PROFILE.HTML - Script tagovi su učitani. Proveravam funkcije...');
+            console.log('getUserData:', typeof getUserData);
+            console.log('checkAuth (common):', typeof checkAuth);
+            console.log('loadUsername:', typeof loadUsername);
+            console.log('loadProfile:', typeof loadProfile);
+            
+            // Proveri da li postoji konflikt sa checkAuth funkcijama
+            if (typeof checkAuth === 'function') {
+                console.log('🔴 PROFILE.HTML - checkAuth je dostupan');
+            } else {
+                console.error('🔴 PROFILE.HTML - checkAuth NIJE dostupan!');
+            }
+            
+            // Ako loadProfile nije dostupan, pokušaj da ga pozoveš direktno
+            if (typeof loadProfile === 'undefined') {
+                console.error('🔴 PROFILE.HTML - loadProfile NIJE dostupan! Proveravam da li postoji greška u profile.js');
+            }
+        }, 100);
+        
+        // Initialize theme selector when settings tab is opened
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔴 PROFILE.HTML - DOMContentLoaded pozvan');
+            const settingsTab = document.getElementById('settingsTab');
+            const settingsBtn = document.querySelector('[data-tab="settings"]');
+            
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        if (typeof ThemeManager !== 'undefined') {
+                            ThemeManager.setupThemeSelector();
+                        }
+                    }, 100);
+                });
+            }
+            
+            // Also setup if settings tab is already active
+            if (settingsTab && settingsTab.classList.contains('active')) {
+                setTimeout(() => {
+                    if (typeof ThemeManager !== 'undefined') {
+                        ThemeManager.setupThemeSelector();
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
+

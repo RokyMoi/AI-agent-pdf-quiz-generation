@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moji Kvizovi - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/my-quizzes.css">
+    <script src="../scripts/theme-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="brand-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link active">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📚 Moji Kvizovi</h1>
+                <p>Pregledajte i upravljajte svim svojim kvizovima</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label for="statusFilter">Status:</label>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">Svi</option>
+                        <option value="draft">Draft</option>
+                        <option value="published">Objavljeni</option>
+                        <option value="archived">Arhivirani</option>
+                    </select>
+                </div>
+                <button id="refreshBtn" class="btn btn-primary">Osveži</button>
+            </div>
+
+            <!-- Quizzes Grid -->
+            <div id="quizzesContainer" class="quizzes-grid">
+                <div class="loading">Učitavanje kvizova...</div>
+            </div>
+            
+            <!-- View Results Button (shown when quizzes are loaded) -->
+            <div id="viewResultsSection" style="display: none; margin-top: 2rem; text-align: center;">
+                <a href="quiz-results.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    📊 Pogledaj Rezultate
+                </a>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📝</div>
+                <h2>Nemate još uvek kreiranih kvizova</h2>
+                <p>Kreirajte svoj prvi kviz i počnite da učite!</p>
+                <a href="create-quiz.html" class="btn btn-primary">Kreiraj Kviz</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/my-quizzes.js"></script>
+</body>
+</html>
+

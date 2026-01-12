@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezultati Kviza - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/results.css">
+    <script src="../scripts/theme-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📊 Rezultati Kviza</h1>
+                <p>Pregledajte detaljne rezultate kviza</p>
+            </div>
+
+            <!-- Quiz Selector -->
+            <div class="quiz-selector">
+                <label for="quizIdInput">ID Kviza:</label>
+                <input type="number" id="quizIdInput" placeholder="Unesite ID kviza" value="1">
+                <button id="loadResultsBtn" class="btn btn-primary">Učitaj Rezultate</button>
+            </div>
+
+            <!-- Results Container -->
+            <div id="resultsContainer" class="results-container">
+                <div class="loading">Unesite ID kviza i kliknite "Učitaj Rezultate"</div>
+            </div>
+
+            <!-- Export Options -->
+            <div id="exportSection" class="export-section" style="display: none;">
+                <h3>Eksport Rezultata</h3>
+                <div class="export-buttons">
+                    <button id="exportCsvBtn" class="btn btn-secondary">Eksportuj CSV</button>
+                    <button id="exportPdfBtn" class="btn btn-secondary">Eksportuj PDF</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/results.js"></script>
+</body>
+</html>
+

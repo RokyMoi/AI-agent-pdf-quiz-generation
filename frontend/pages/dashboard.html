@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <script src="../scripts/theme-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1>Dobrodošli, <span id="userName">Korisnik</span>!</h1>
+                <p class="welcome-text">Kreirajte kvizove, učite i pratite svoj napredak</p>
+            </section>
+
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon"><span class="material-icons">bar_chart</span></div>
+                    <div class="stat-info">
+                        <h3 id="totalQuizzes">0</h3>
+                        <p>Ukupno Kvizova</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><span class="material-icons">track_changes</span></div>
+                    <div class="stat-info">
+                        <h3 id="totalScore">0</h3>
+                        <p>Ukupni Score</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><span class="material-icons">star</span></div>
+                    <div class="stat-info">
+                        <h3 id="avgAccuracy">0%</h3>
+                        <p>Prosečna Tačnost</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <h2>Brze Akcije</h2>
+                <div class="action-cards">
+                    <a href="create-quiz.html" class="action-card">
+                        <div class="action-icon"><span class="material-icons">add_circle</span></div>
+                        <h3>Kreiraj Novi Kviz</h3>
+                        <p>Uploaduj PDF i kreiraj interaktivni kviz</p>
+                    </a>
+                    <a href="my-quizzes.html" class="action-card">
+                        <div class="action-icon"><span class="material-icons">menu_book</span></div>
+                        <h3>Moji Kvizovi</h3>
+                        <p>Pregledaj sve svoje kvizove</p>
+                    </a>
+                    <a href="other-quizzes.html" class="action-card">
+                        <div class="action-icon"><span class="material-icons">public</span></div>
+                        <h3>Istraži Kvizove</h3>
+                        <p>Pronađi kvizove drugih korisnika</p>
+                    </a>
+                    <a href="leaderboard.html" class="action-card">
+                        <div class="action-icon"><span class="material-icons">emoji_events</span></div>
+                        <h3>Leaderboard</h3>
+                        <p>Vidi gde se nalaziš na rang listi</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h2>Nedavna Aktivnost</h2>
+                <div id="recentActivity" class="activity-list">
+                    <p class="no-activity">Nema nedavne aktivnosti</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/dashboard.js"></script>
+</body>
+</html>
+

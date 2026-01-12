@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF QuizMaster AI - Interaktivni AI Agent za Učenje</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Redirect to login if not authenticated, otherwise to dashboard (bez JWT)
+        window.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    if (user && user.id) {
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+                } catch (e) {
+                    // Invalid userData, continue to login
+                }
+            }
+            window.location.href = 'login.html';
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <img src="assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                    PDF QuizMaster AI
+                </h1>
+                <p class="tagline">Interaktivni AI agent za adaptivno učenje iz PDF dokumenata</p>
+                <p style="margin-top: 1rem;">Preusmjeravanje...</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">Transformiši svoje PDF dokumente u interaktivne kvizove</h2>
+                    <p class="hero-description">
+                        Uploaduj bilo koji PDF dokument, i naš AI agent će automatski generisati 
+                        prilagođena pitanja i voditi tebe kroz adaptivni proces učenja koristeći 
+                        Reinforcement Learning tehnologiju.
+                    </p>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered</h3>
+                    <p>Koristi Claude AI za generisanje inteligentnih pitanja</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Adaptivno Učenje</h3>
+                    <p>RL agent prilagođava pitanja na osnovu tvojih slabosti</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Detaljna Analiza</h3>
+                    <p>Prati napredak i identifikuje oblasti za poboljšanje</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Skalabilno</h3>
+                    <p>Radi sa PDF-ovima bilo koje veličine (stotine stranica)</p>
+                </div>
+            </div>
+
+            <div class="app-container" id="app-container">
+                <div class="app-wrapper">
+                    <iframe 
+                        id="gradio-frame"
+                        src="http://127.0.0.1:7860" 
+                        frameborder="0"
+                        allowfullscreen
+                        class="gradio-iframe"
+                        style="width: 100%; height: 100vh; min-height: 900px;">
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="instructions-section">
+                <h3 class="section-title">Kako koristiti?</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Upload PDF</h4>
+                            <p>Izaberi PDF dokument koji želiš da učiš</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Podesi Opcije</h4>
+                            <p>Izaberi broj pitanja i veličinu segmenta</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Učestvuj u Kvizu</h4>
+                            <p>Odgovaraj na pitanja i dobij instant feedback</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Analiziraj Rezultate</h4>
+                            <p>Pogledaj finalni izveštaj i fokusiraj se na slabije oblasti</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 PDF QuizMaster AI. Kreirano sa ❤️ za edukaciju.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Proveri da li je Gradio aplikacija dostupna
+        const iframe = document.getElementById('gradio-frame');
+        
+        iframe.onload = function() {
+            console.log('Gradio aplikacija je učitana');
+        };
+        
+        iframe.onerror = function() {
+            const container = document.getElementById('app-container');
+            container.innerHTML = `
+                <div class="error-message">
+                    <h3>⚠️ Gradio aplikacija nije pokrenuta</h3>
+                    <p>Molimo pokrenite aplikaciju sa:</p>
+                    <code>python main.py</code>
+                    <p>Ili proverite da li je aplikacija dostupna na <a href="http://127.0.0.1:7860" target="_blank">http://127.0.0.1:7860</a></p>
+                </div>
+            `;
+        };
+        
+        // Fullscreen toggle (opciono)
+        function toggleFullscreen() {
+            const container = document.getElementById('app-container');
+            container.classList.toggle('fullscreen');
+        }
+        
+        // Auto-resize iframe
+        window.addEventListener('resize', function() {
+            const iframe = document.getElementById('gradio-frame');
+            if (iframe) {
+                iframe.style.height = window.innerHeight + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
+

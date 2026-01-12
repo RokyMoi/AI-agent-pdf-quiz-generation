@@ -1,0 +1,199 @@
+/* Custom Gradio Theme - PDF QuizMaster AI */
+/* ======================================== */
+
+body {
+    font-size: 1.3rem;
+    background-color: transparent;
+    background-image: url('../assets/art-2560x1080-z3p1ahko27nkit77.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+:root {
+    --primary-purple: #8B5CF6;
+    --primary-purple-dark: #7C3AED;
+    --primary-purple-light: #A78BFA;
+    --white: #FFFFFF;
+    --gray-light: #F3F4F6;
+    --gradient-start: #FFFFFF;
+    --gradient-end: #8B5CF6;
+}
+
+/* Main Gradio Container */
+.gradio-container {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, #E9D5FF 50%, var(--gradient-end) 100%) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Buttons */
+button.primary {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
+}
+
+button.primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+button.secondary {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 2px solid var(--primary-purple) !important;
+    color: var(--primary-purple) !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+button.secondary:hover {
+    background: var(--primary-purple) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 2px solid rgba(139, 92, 246, 0.2) !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-purple) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+    outline: none !important;
+}
+
+/* Sliders */
+input[type="range"] {
+    accent-color: var(--primary-purple) !important;
+}
+
+/* File Upload */
+.upload-area {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 2px dashed var(--primary-purple) !important;
+    border-radius: 15px !important;
+    padding: 2rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.upload-area:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    border-color: var(--primary-purple-dark) !important;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Markdown/Text Display */
+.markdown,
+.markdown p {
+    color: var(--text-dark) !important;
+    line-height: 1.8 !important;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+    color: var(--primary-purple) !important;
+    font-weight: 700 !important;
+}
+
+/* Cards/Boxes */
+.panel,
+.box {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1) !important;
+    border: 1px solid rgba(139, 92, 246, 0.1) !important;
+    padding: 1.5rem !important;
+}
+
+/* Progress Bars */
+.progress-bar {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%) !important;
+    border-radius: 10px !important;
+}
+
+/* Scrollbar */
+.gradio-container ::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+.gradio-container ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.gradio-container ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 100%) !important;
+    border-radius: 5px !important;
+}
+
+/* Success/Error Messages */
+.success {
+    color: #10B981 !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    padding: 1rem !important;
+    border-radius: 10px !important;
+    border-left: 4px solid #10B981 !important;
+}
+
+.error {
+    color: #EF4444 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+    padding: 1rem !important;
+    border-radius: 10px !important;
+    border-left: 4px solid #EF4444 !important;
+}
+
+/* Option Buttons (A, B, C, D) */
+.option-button {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 2px solid var(--primary-purple) !important;
+    color: var(--primary-purple) !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    padding: 1rem 2rem !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+    min-width: 80px !important;
+}
+
+.option-button:hover {
+    background: var(--primary-purple) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gradio-container {
+        padding: 1rem !important;
+    }
+    
+    button.primary,
+    button.secondary {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+    }
+}
+

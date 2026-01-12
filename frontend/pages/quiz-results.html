@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezultati Kviza - PDF QuizMaster AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/results.css">
+    <script src="../scripts/theme-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">FitQuiz</span>
+            </div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-quiz.html" class="nav-link">Kreiraj Kviz</a>
+                <a href="my-quizzes.html" class="nav-link">Moji Kvizovi</a>
+                <a href="other-quizzes.html" class="nav-link">Kvizovi Drugih</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="profile.html" class="nav-link">Profil</a>
+            </div>
+            <div class="nav-user">
+                <span id="usernameDisplay" class="username">Korisnik</span>
+                <button id="logoutBtn" class="btn-logout">Odjavi se</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>📊 Rezultati Kviza</h1>
+                <p>Detaljni pregled rezultata i statistika za vaše kvizove</p>
+            </div>
+
+            <!-- Quiz Selector -->
+            <div class="quiz-selector-section">
+                <label for="quizSelect">Izaberite Kviz:</label>
+                <select id="quizSelect" class="filter-select">
+                    <option value="">Učitavanje kvizova...</option>
+                </select>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div id="dashboardStats" class="dashboard-stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Ukupno Korisnika</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3 id="totalAttempts">0</h3>
+                        <p>Ukupno Pokušaja</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <h3 id="avgScore">0%</h3>
+                        <p>Prosečan Rezultat</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <h3 id="avgAccuracy">0%</h3>
+                        <p>Prosečna Tačnost</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="results-container">
+                <h2>Detaljni Rezultati</h2>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Korisnik</th>
+                            <th>Email</th>
+                            <th>Rezultat</th>
+                            <th>Tačnost</th>
+                            <th>Vreme</th>
+                            <th>IP Adresa</th>
+                            <th>Detalji</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <tr>
+                            <td colspan="7" class="loading">Učitavanje rezultata...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- IP Address Analysis -->
+            <div class="ip-analysis-section">
+                <h2>Analiza IP Adresa (Anti-Varanje)</h2>
+                <div id="ipAnalysis" class="ip-analysis-content">
+                    <p class="loading">Učitavanje analize...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="../scripts/quiz-results.js"></script>
+</body>
+</html>
+

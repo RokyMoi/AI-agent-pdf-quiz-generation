@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registracija - FitQuiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/netflix-theme.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-container" style="justify-content: center; margin-bottom: 1rem;">
+                    <img src="../assets/stardewlogo.png" alt="FitQuiz Logo" class="logo-img" style="height: 40px; width: auto;">
+                    <span class="logo-text">FitQuiz</span>
+                </div>
+                <p class="subtitle">Kreirajte novi nalog</p>
+            </div>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Korisničko ime</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required 
+                        placeholder="Unesite korisničko ime (min. 3 karaktera)"
+                        autocomplete="username"
+                        minlength="3"
+                    >
+                    <small class="form-hint">Minimum 3 karaktera</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email adresa</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Unesite email adresu"
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Lozinka</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        placeholder="Unesite lozinku (min. 6 karaktera)"
+                        autocomplete="new-password"
+                        minlength="6"
+                    >
+                    <small class="form-hint">Minimum 6 karaktera</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Potvrda lozinke</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        required 
+                        placeholder="Potvrdite lozinku"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms" required>
+                        <span>Prihvatam <a href="#" class="link">uslove korišćenja</a> i <a href="#" class="link">politiku privatnosti</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span>Registruj se</span>
+                </button>
+
+                <div class="auth-divider">
+                    <span>ili</span>
+                </div>
+
+                <p class="auth-switch">
+                    Već imate nalog? <a href="login.html">Prijavite se</a>
+                </p>
+            </form>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+        </div>
+
+        <div class="auth-footer">
+            <p>&copy; 2025 FitQuiz. Sva prava zadržana.</p>
+        </div>
+    </div>
+
+    <script src="../scripts/theme-manager.js"></script>
+    <script>
+        console.log('🔴 HTML učitano, pokušavam da učitam auth.js...');
+    </script>
+    <script src="../scripts/auth.js" onerror="console.error('❌ GREŠKA: auth.js se ne može učitati!')"></script>
+    <script>
+        console.log('🔴 Script tagovi su učitani. Proveravam da li su funkcije dostupne...');
+        console.log('handleLogin:', typeof handleLogin);
+        console.log('handleRegister:', typeof handleRegister);
+    </script>
+</body>
+</html>
+

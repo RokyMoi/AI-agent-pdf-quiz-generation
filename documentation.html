@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent-orange: #ce9178;
+            --accent-green: #4ec9b0;
+            --accent-blue: #569cd6;
+            --accent-yellow: #dcdcaa;
+            --accent-purple: #c586c0;
+            --border-color: #3e3e42;
+            --code-bg: #1e1e1e;
+            --code-border: #3e3e42;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            padding: 30px 0;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: var(--accent-green);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+
+        nav {
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .table-of-contents {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .table-of-contents td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+        
+        .table-of-contents td:first-child {
+            width: 200px;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        
+        .table-of-contents td:last-child {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+        
+        .table-of-contents tr:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .table-of-contents a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .table-of-contents a:hover {
+            color: var(--accent-green);
+        }
+
+        nav::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        nav::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        nav::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        nav::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-green);
+        }
+
+        @media (max-width: 1200px) {
+            nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                max-height: 300px;
+            }
+        }
+
+        nav h2 {
+            color: var(--accent-green);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        section {
+            background: var(--bg-secondary);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        section h2 {
+            color: var(--accent-green);
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        section h3 {
+            color: var(--accent-blue);
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        section h4 {
+            color: var(--accent-orange);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .module-info {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .function-doc, .class-doc {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .function-doc h4 {
+            color: var(--accent-green);
+        }
+
+        .class-doc h4 {
+            color: var(--accent-purple);
+        }
+
+        .param-list {
+            margin: 15px 0;
+        }
+
+        .param-list dt {
+            color: var(--accent-orange);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .param-list dd {
+            margin-left: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 6px;
+            padding: 0;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .code-block code {
+            display: block;
+            padding: 20px;
+            color: var(--text-primary);
+            white-space: pre;
+            tab-size: 4;
+            -moz-tab-size: 4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-block code .line {
+            display: block;
+            min-height: 1.6em;
+        }
+
+        .code-block code .line-number {
+            display: inline-block;
+            width: 45px;
+            padding-right: 15px;
+            margin-right: 15px;
+            text-align: right;
+            color: var(--text-secondary);
+            border-right: 1px solid var(--border-color);
+            user-select: none;
+            font-size: 12px;
+        }
+
+        /* Syntax highlighting */
+        .keyword { color: var(--accent-blue); }
+        .string { color: var(--accent-orange); }
+        .function { color: var(--accent-green); }
+        .class-name { color: var(--accent-purple); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .number { color: var(--accent-yellow); }
+        .operator { color: var(--accent-blue); }
+        .decorator { color: var(--accent-purple); }
+
+        .returns {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .returns strong {
+            color: var(--accent-green);
+        }
+
+        .side-effects {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-yellow);
+        }
+
+        .side-effects strong {
+            color: var(--accent-yellow);
+        }
+
+        .edge-cases {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .edge-cases strong {
+            color: var(--accent-orange);
+        }
+
+        .example {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .example strong {
+            color: var(--accent-blue);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            border-top: 2px solid var(--border-color);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .code-block {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <header style="background: var(--bg-secondary); padding: 30px 40px; border-bottom: 2px solid var(--border-color); margin-bottom: 40px; text-align: center;">
+            <h1 style="color: var(--accent-green); font-size: 2.5em; margin-bottom: 10px;">PDF FitQuiz</h1>
+            <p style="color: var(--text-secondary); font-size: 1.1em;">Kompletna dokumentaciju i objasnjenja za AI AGENTA</p>
+        </header>
+
+        <div class="container">
+            <section id="uvod" style="background: var(--bg-secondary); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid var(--border-color);">
+                <h2 style="color: var(--accent-green); font-size: 2em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border-color);">Uvod</h2>
+                <div class="module-info">
+                    <p><strong>O projektu</strong></p>
+                    <p>PDF FitQuiz je interaktivna edukativna aplikacija koja kombinuje napredne tehnologije veštačke inteligencije, mašinskog učenja i web razvoja da kreira jedinstveno iskustvo učenja. Aplikacija omogućava korisnicima da uploaduju PDF dokumente bilo koje veličine, od kratkih članaka do opsežnih knjiga sa stotinama stranica, i automatski transformiše sadržaj tih dokumenata u interaktivne kvizove sa prilagođenim pitanjima.</p>
+                    
+                    <p>Osnovna ideja aplikacije je da koristi moć modernih AI modela, konkretno Google Gemini API, da analizira tekstualni sadržaj PDF dokumenata i generiše relevantna, edukativna pitanja koja testiraju razumevanje materije. Međutim, ono što čini ovu aplikaciju posebno naprednom je integracija Reinforcement Learning (RL) algoritama koji prate performanse korisnika tokom rešavanja kviza i adaptivno prilagođavaju izbor pitanja da fokusiraju na oblasti gde korisnik pokazuje slabije razumevanje.</p>
+
+                    <p>Aplikacija je razvijena koristeći Python programski jezik za backend logiku, Flask framework za REST API server, Gradio za interaktivni korisnički interfejs, i SQLite bazu podataka za čuvanje podataka. Frontend deo aplikacije je implementiran koristeći HTML, CSS i JavaScript, što omogućava moderno, responsive korisničko iskustvo koje radi na različitim uređajima i platformama.</p>
+
+                    <p>Jedan od ključnih aspekata aplikacije je njen modularni dizajn. Svaka komponenta sistema je dizajnirana kao nezavisni modul sa jasno definisanim interfejsom i odgovornostima. Ovo omogućava lako održavanje, proširenje funkcionalnosti i testiranje pojedinačnih komponenti. Na primer, PDF parser može da se zameni drugom implementacijom bez uticaja na ostatak sistema, generator pitanja može da koristi različite AI modele, a baza podataka može da se migrira na drugi sistem bez promene aplikacione logike.</p>
+
+                    <p>Aplikacija podržava kompletan životni ciklus kviza, od kreiranja do analize rezultata. Korisnici mogu da kreiraju kvizove iz svojih PDF dokumenata, sačuvaju ih za kasnije korišćenje, dele ih sa drugim korisnicima, rešavaju kvizove drugih korisnika, i prate svoje performanse kroz vreme. Sistem čuva detaljne statistike o svakom korisniku, uključujući ukupan broj rešenih kvizova, prosečnu tačnost, i identifikaciju najslabijih oblasti koje zahtevaju dodatnu vežbu.</p>
+
+                    <p>Bezbednost aplikacije je osigurana kroz implementaciju JWT (JSON Web Tokens) autentifikacije i bcrypt hash-ovanja lozinki. Svaki korisnik mora da se registruje i prijavi pre pristupa aplikaciji, a svi zahtevi koji menjaju podatke zahtevaju validnu autentifikaciju. Lozinke se nikada ne čuvaju u plain text formatu, već se koristi bcrypt algoritam koji generiše siguran hash koji se čuva u bazi podataka.</p>
+                </div>
+            </section>
+
+            <nav>
+                <h2>📚 Sadržaj</h2>
+                <table class="table-of-contents">
+                    <tr>
+                        <td><a href="#uvod">1. Uvod</a></td>
+                        <td>Uvod u PDF FitQuiz projekt, osnovni koncepti i funkcionalnosti sistema</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#architecture">2. Arhitektura</a></td>
+                        <td>Struktura sistema, komponente i njihove međusobne veze</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#backend">3. Backend Moduli</a></td>
+                        <td>Pregled svih backend modula i njihove uloge u sistemu</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#main-py">3.1 main.py</a></td>
+                        <td>Glavni aplikacioni fajl za pokretanje PDF FitQuiz agenta</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#api-server-py">3.2 api_server.py</a></td>
+                        <td>REST API server za komunikaciju između frontend-a i backend logike</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#database-py">3.3 database.py</a></td>
+                        <td>SQLite baza podataka za korisnike, kvizove i rezultate</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#pdf-parser-py">3.4 pdf_parser.py</a></td>
+                        <td>Ekstrakcija teksta iz PDF dokumenata sa podrškom za velike fajlove</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#chunking-py">3.5 chunking.py</a></td>
+                        <td>Segmentacija teksta na manje delove za AI procesiranje</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#gemini-generator-py">3.6 google_gemini_generator.py</a></td>
+                        <td>Generisanje pitanja koristeći Google Gemini API sa automatskim fallback-om</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#rl-agent-py">3.7 rl_agent.py</a></td>
+                        <td>Reinforcement Learning agent za adaptivno učenje i selekciju pitanja</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#quiz-engine-py">3.8 quiz_engine.py</a></td>
+                        <td>Upravljanje tokom kviza, koordinacija RL agenta i generatora pitanja</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#auth-py">3.9 auth.py</a></td>
+                        <td>JWT autentifikacija i hash-ovanje lozinki koristeći bcrypt</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#auth-api-py">3.10 auth_api.py</a></td>
+                        <td>API integracija autentifikacione logike sa bazom podataka</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#frontend">4. Frontend Moduli</a></td>
+                        <td>Pregled svih frontend JavaScript modula i njihove funkcionalnosti</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#common-js">4.1 common.js</a></td>
+                        <td>Zajednički JavaScript kod za sve frontend stranice</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#auth-js">4.2 auth.js</a></td>
+                        <td>Frontend logika za login i registraciju korisnika</td>
+                    </tr>
+                </table>
+            </nav>
+
+            <div class="content">
+
+        <section id="architecture">
+            <h2>Arhitektura Sistema</h2>
+            <div class="module-info">
+                <p>Arhitektura PDF FitQuiz aplikacije je dizajnirana po principima klijent-server arhitekture sa jasnom podelom između frontend i backend komponenti. Backend deo aplikacije je implementiran u Python-u i sastoji se od nekoliko ključnih modula koji rade zajedno da obezbede kompletnu funkcionalnost sistema. Frontend deo je implementiran kao kolekcija HTML stranica sa JavaScript funkcionalnostima koje komuniciraju sa backend-om preko REST API interfejsa.</p>
+
+                <p>Backend aplikacija se može podeliti u nekoliko slojeva. Najniži sloj je sloj baze podataka, koji koristi SQLite bazu podataka za čuvanje svih podataka aplikacije. SQLite je izabran jer je lagan, ne zahteva odvojeni server proces, i savršen je za aplikacije srednje veličine kao što je ova. Baza podataka čuva podatke o korisnicima, kvizovima, pitanjima, rezultatima, i svim drugim entitetima sistema.</p>
+
+                <p>Iznad sloja baze podataka je sloj aplikacione logike, koji se sastoji od nekoliko modula. PDF parser modul je odgovoran za ekstrakciju teksta iz PDF dokumenata. Koristi pdfplumber biblioteku kao primarni parser, sa fallback opcijom na PyPDF2 ako pdfplumber ne uspe. Parser podržava progress callback mehanizme koji omogućavaju praćenje napretka tokom parsiranja velikih dokumenata.</p>
+
+                <p>Chunking modul deli ekstraktovani tekst na manje segmente (chunk-ove) koji su optimalne veličine za AI procesiranje. Modul podržava dva načina chunking-a: po broju reči i po poglavljima. Chunking po rečima deli tekst na segmente od određenog broja reči sa preklapanjem između segmenata da se osigura kontinuitet konteksta. Chunking po poglavljima pokušava da detektuje strukturu dokumenta i deli ga na osnovu naslova poglavlja.</p>
+
+                <p>Generator pitanja modul koristi Google Gemini API da generiše pitanja iz chunk-ova teksta. Modul implementira naprednu logiku za upravljanje različitim Gemini modelima, sa automatskim fallback mehanizmom ako određeni model nije dostupan ili je prekoračen rate limit. Modul takođe implementira rate limiting da osigura da aplikacija ne prekorači API kvote. Generiše multiple-choice pitanja sa četiri opcije odgovora, tačnim odgovorom, i detaljnim objašnjenjem.</p>
+
+                <p>Reinforcement Learning agent modul implementira adaptivno učenje koristeći PPO (Proximal Policy Optimization) pristup. Agent prati performanse korisnika po svakom chunk-u, ažurira svoju politiku izbora chunk-ova na osnovu reward signala, i prilagođava izbor pitanja da fokusira na oblasti gde korisnik pokazuje slabije razumevanje. Agent koristi epsilon-greedy strategiju koja balansira između istraživanja novih oblasti i eksploatacije trenutnog znanja.</p>
+
+                <p>Quiz engine modul koordinira sve komponente tokom izvršavanja kviza. Upravlja stanjem kviza, generiše pitanja koristeći RL agenta i generator pitanja, procesira odgovore korisnika, prati napredak, i generiše finalne izvještaje. Modul koristi cache mehanizam da čuva generisana pitanja i izbegava nepotrebne API pozive.</p>
+
+                <p>REST API server modul implementira Flask aplikaciju koja izlaže HTTP endpoint-e za komunikaciju sa frontend-om. Server koristi CORS (Cross-Origin Resource Sharing) da dozvoli komunikaciju između frontend-a i backend-a kada su na različitim portovima. Endpoint-i pokrivaju sve funkcionalnosti aplikacije: upload PDF-a, generisanje pitanja, autentifikaciju, čuvanje kvizova i rezultata, i dohvatanje statistika.</p>
+
+                <p>Autentifikacija modul implementira JWT (JSON Web Tokens) mehanizam za upravljanje sesijama korisnika. Koristi bcrypt algoritam za hash-ovanje lozinki, što osigurava da se lozinke nikada ne čuvaju u plain text formatu. Modul generiše JWT tokene koji sadrže informacije o korisniku i imaju vreme trajanja od 24 sata.</p>
+
+                <p>Frontend aplikacija se sastoji od nekoliko HTML stranica koje koriste JavaScript za komunikaciju sa backend-om. Svaka stranica ima specifičnu ulogu: login i register stranice za autentifikaciju, dashboard za pregled, create-quiz za kreiranje kvizova, quiz-take za rešavanje kvizova, i rezultati stranice za analizu performansi. JavaScript moduli upravljaju API pozivima, validacijom podataka, i ažuriranjem korisničkog interfejsa.</p>
+
+                <p>Komunikacija između frontend-a i backend-a se odvija preko HTTP zahteva i odgovora u JSON formatu. Frontend šalje HTTP POST zahteve sa podacima u JSON formatu, backend procesira zahteve, izvršava potrebne operacije, i vraća odgovore takođe u JSON formatu. Za operacije koje traju duže vreme, kao što je parsiranje PDF-a, koristi se Server-Sent Events (SSE) mehanizam za real-time progress updates.</p>
+            </div>
+        </section>
+
+        <section id="backend">
+            <h2>Backend Moduli</h2>
+
+            <!-- main.py -->
+            <section id="main-py">
+                <h3>main.py - Glavni Aplikacioni Ulazni Tačka</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Glavni aplikacioni fajl za pokretanje PDF FitQuiz agenta. Upravlja parsiranjem argumenata komandne linije, učitavanjem environment varijabli, validacijom API ključa, i inicijalizacijom UI-a.</p>
+                    <p>Ovaj modul predstavlja ulaznu tačku aplikacije. Kada korisnik pokrene aplikaciju komandom <code>python main.py</code>, Python interpreter prvo izvršava kod u ovom fajlu. Fajl je dizajniran da bude jednostavan i jasan, sa fokusom na inicijalizaciju sistema i pokretanje korisničkog interfejsa.</p>
+                    <p>Fajl počinje sa učitavanjem potrebnih modula. argparse modul se koristi za parsiranje argumenta komandne linije, što omogućava korisniku da specificira opcije kao što su port servera, adresa servera, i da li želi da kreira javni link. os modul se koristi za pristup environment varijablama, a sys modul za sistemske funkcije kao što je izlazak iz programa.</p>
+                    <p>Jedan od ključnih aspekata main.py fajla je način na koji upravlja autentifikacijom. Fajl prvo pokušava da importuje ui_with_auth modul, koji sadrži Gradio interfejs sa autentifikacijom. Ako taj modul ne postoji ili nije dostupan, fajl prelazi na osnovni ui modul koji ne zahteva autentifikaciju. Ovo omogućava aplikaciji da radi u oba režima, zavisno od toga koje module korisnik ima instalirane.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h4>main()</h4>
+                    <p>Glavna ulazna funkcija koja inicijalizuje i pokreće aplikaciju. Ova funkcija je omotana u try-except blok da osigura da se aplikacija pravilno zatvori ako korisnik prekine izvršavanje (Ctrl+C) ili ako dođe do greške. U slučaju prekida, aplikacija prikazuje prijateljsku poruku i izlazi sa statusom 0 (uspešan izlaz). U slučaju greške, aplikacija prikazuje poruku o grešci i izlazi sa statusom 1 (greška).</p>
+                    <dl class="param-list">
+                        <dt>Povratna vrednost:</dt>
+                        <dd>None. Izlazi sa kodom 0 na uspeh, 1 na grešku.</dd>
+                    </dl>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Učitava environment varijable iz .env fajla</li>
+                            <li>Postavlja default API ključ ako GOOGLE_API_KEY nije konfigurisan</li>
+                            <li>Pokreće Gradio UI interfejs</li>
+                            <li>Elegantno upravlja KeyboardInterrupt signalom</li>
+                        </ul>
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Ako .env fajl je korumpiran ili nedostaje, koristi default API ključ</li>
+                            <li>Ako ui_with_auth modul nije dostupan, prelazi na ui modul</li>
+                            <li>Elegantno upravlja Ctrl+C prekidom</li>
+                            <li>Proverava da li je API ključ postavljen pre pokretanja aplikacije</li>
+                        </ul>
+                    </div>
+                    <div class="example">
+                        <strong>Primer upotrebe:</strong>
+                        <p>Pokretanje aplikacije sa default postavkama:</p>
+                        <div class="code-block">
+<code>python main.py</code>
+                        </div>
+                        <p>Pokretanje sa custom portom i share linkom:</p>
+                        <div class="code-block">
+<code>python main.py --server-port 8080 --share</code>
+                        </div>
+                    </div>
+                    <div class="code-block">
+<code><span class="line-number">1</span><span class="comment">"""</span>
+<span class="line-number">2</span><span class="comment">PDF FitQuiz - Main Application</span>
+<span class="line-number">3</span><span class="comment">=====================================</span>
+<span class="line-number">4</span><span class="comment">Glavni aplikacioni fajl za pokretanje PDF FitQuiz agenta.</span>
+<span class="line-number">5</span><span class="comment">"""</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span><span class="keyword">import</span> argparse
+<span class="line-number">8</span><span class="keyword">import</span> os
+<span class="line-number">9</span><span class="keyword">import</span> sys
+<span class="line-number">10</span><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+<span class="line-number">11</span>
+<span class="line-number">12</span><span class="comment"># Import sa auth ili bez auth</span>
+<span class="line-number">13</span><span class="keyword">try</span>:
+<span class="line-number">14</span>    <span class="keyword">from</span> ui_with_auth <span class="keyword">import</span> launch_ui
+<span class="line-number">15</span>    HAS_AUTH = <span class="keyword">True</span>
+<span class="line-number">16</span><span class="keyword">except</span> ImportError:
+<span class="line-number">17</span>    <span class="keyword">from</span> ui <span class="keyword">import</span> launch_ui
+<span class="line-number">18</span>    HAS_AUTH = <span class="keyword">False</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span><span class="comment"># Učitaj environment varijable iz .env fajla</span>
+<span class="line-number">21</span><span class="keyword">try</span>:
+<span class="line-number">22</span>    load_dotenv()
+<span class="line-number">23</span><span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+<span class="line-number">24</span>    print(f<span class="string">"⚠️  Upozorenje: Ne mogu da učitam .env fajl: {e}"</span>)
+<span class="line-number">25</span>    print(<span class="string">"   Koristiću default API key iz koda.\n"</span>)
+<span class="line-number">26</span>
+<span class="line-number">27</span><span class="keyword">def</span> <span class="function">main</span>():
+<span class="line-number">28</span>    <span class="string">"""Glavna funkcija za pokretanje aplikacije."""</span>
+<span class="line-number">29</span>    parser = argparse.ArgumentParser(
+<span class="line-number">30</span>        description=<span class="string">"PDF FitQuiz - Interaktivni AI agent za učenje iz PDF dokumenata"</span>
+<span class="line-number">31</span>    )
+<span class="line-number">32</span>    
+<span class="line-number">33</span>    parser.add_argument(
+<span class="line-number">34</span>        <span class="string">'--share'</span>,
+<span class="line-number">35</span>        action=<span class="string">'store_true'</span>,
+<span class="line-number">36</span>        help=<span class="string">'Kreira share link za Gradio (za pristup preko interneta)'</span>
+<span class="line-number">37</span>    )
+<span class="line-number">38</span>    
+<span class="line-number">39</span>    parser.add_argument(
+<span class="line-number">40</span>        <span class="string">'--server-name'</span>,
+<span class="line-number">41</span>        type=str,
+<span class="line-number">42</span>        default=<span class="string">'127.0.0.1'</span>,
+<span class="line-number">43</span>        help=<span class="string">'Server adresa (default: 127.0.0.1)'</span>
+<span class="line-number">44</span>    )
+<span class="line-number">45</span>    
+<span class="line-number">46</span>    parser.add_argument(
+<span class="line-number">47</span>        <span class="string">'--server-port'</span>,
+<span class="line-number">48</span>        type=int,
+<span class="line-number">49</span>        default=<span class="number">7860</span>,
+<span class="line-number">50</span>        help=<span class="string">'Server port (default: 7860)'</span>
+<span class="line-number">51</span>    )
+<span class="line-number">52</span>    
+<span class="line-number">53</span>    args = parser.parse_args()
+<span class="line-number">54</span>    
+<span class="line-number">55</span>    <span class="comment"># Proveri da li je API ključ postavljen</span>
+<span class="line-number">56</span>    api_key = os.getenv(<span class="string">'GOOGLE_API_KEY'</span>)
+<span class="line-number">57</span>    <span class="keyword">if</span> <span class="keyword">not</span> api_key:
+<span class="line-number">58</span>        print(<span class="string">"⚠️  UPOZORENJE: GOOGLE_API_KEY nije postavljen u .env fajlu!"</span>)
+<span class="line-number">59</span>        print(<span class="string">"   Koristim default API key: AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"</span>)
+<span class="line-number">60</span>        os.environ[<span class="string">'GOOGLE_API_KEY'</span>] = <span class="string">"AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"</span>
+<span class="line-number">61</span>    <span class="keyword">else</span>:
+<span class="line-number">62</span>        print(f<span class="string">"✅ GOOGLE_API_KEY je postavljen (prvih 10 karaktera: {api_key[:10]}...)"</span>)
+<span class="line-number">63</span>    
+<span class="line-number">64</span>    print(<span class="string">"🚀 Pokretanje PDF FitQuiz..."</span>)
+<span class="line-number">65</span>    print(f<span class="string">"   Server: http://{args.server_name}:{args.server_port}"</span>)
+<span class="line-number">66</span>    <span class="keyword">if</span> args.share:
+<span class="line-number">67</span>        print(<span class="string">"   Share link će biti kreiran nakon pokretanja."</span>)
+<span class="line-number">68</span>    print()
+<span class="line-number">69</span>    
+<span class="line-number">70</span>    <span class="keyword">try</span>:
+<span class="line-number">71</span>        launch_ui(
+<span class="line-number">72</span>            share=args.share,
+<span class="line-number">73</span>            server_name=args.server_name,
+<span class="line-number">74</span>            server_port=args.server_port
+<span class="line-number">75</span>        )
+<span class="line-number">76</span>    <span class="keyword">except</span> KeyboardInterrupt:
+<span class="line-number">77</span>        print(<span class="string">"\n\n👋 Aplikacija je zaustavljena."</span>)
+<span class="line-number">78</span>        sys.exit(<span class="number">0</span>)
+<span class="line-number">79</span>    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+<span class="line-number">80</span>        print(f<span class="string">"\n❌ Greška pri pokretanju aplikacije: {e}"</span>)
+<span class="line-number">81</span>        sys.exit(<span class="number">1</span>)
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+<span class="line-number">85</span>    main()</code>
+                    </div>
+                </div>
+            </section>
+
+            <!-- api_server.py -->
+            <section id="api-server-py">
+                <h3>api_server.py - REST API Server</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Flask-based REST API server koji pruža HTTP endpoint-e za komunikaciju sa frontend-om. Upravlja upload-om PDF fajlova, generisanjem pitanja, autentifikacijom, upravljanjem kvizovima, i čuvanjem rezultata.</p>
+                    <p>Ovaj modul implementira Flask aplikaciju koja služi kao REST API wrapper za frontend aplikaciju. Server koristi CORS (Cross-Origin Resource Sharing) da dozvoli komunikaciju između frontend-a i backend-a kada su na različitim portovima. Modul integriše sve backend komponente - PDF parser, chunking modul, generator pitanja, RL agent, quiz engine, bazu podataka, i autentifikaciju - i izlaže njihove funkcionalnosti preko HTTP endpoint-a.</p>
+                    <p>Server implementira napredne funkcionalnosti kao što su Server-Sent Events (SSE) za real-time progress updates tokom parsiranja PDF-a, rate limiting za API pozive da se izbegne prekoračenje kvota, i error handling koji osigurava da aplikacija ne pada čak i kada dođe do neočekivanih grešaka.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h4>check_api_key()</h4>
+                    <p>Validira Google API ključ pokušavajući da kreira instancu GeminiQuestionGenerator. Ova funkcija se poziva na startup-u servera da osigura da je API ključ validan pre nego što server počne da prima zahteve. Ako API ključ nije postavljen, funkcija automatski postavlja default ključ. Funkcija testira API ključ stvaranjem generatora pitanja, što je najsigurniji način da se proveri da li je ključ validan.</p>
+                    <div class="code-block">
+<code><span class="line-number">1</span><span class="keyword">def</span> <span class="function">check_api_key</span>():
+<span class="line-number">2</span>    <span class="string">"""Proverava da li je GOOGLE_API_KEY postavljen i validan."""</span>
+<span class="line-number">3</span>    api_key = os.getenv(<span class="string">'GOOGLE_API_KEY'</span>)
+<span class="line-number">4</span>    <span class="keyword">if</span> <span class="keyword">not</span> api_key:
+<span class="line-number">5</span>        <span class="comment"># Use default key</span>
+<span class="line-number">6</span>        default_key = <span class="string">"AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"</span>
+<span class="line-number">7</span>        logger.info(<span class="string">f"GOOGLE_API_KEY nije postavljen, koristim default key..."</span>)
+<span class="line-number">8</span>        os.environ[<span class="string">'GOOGLE_API_KEY'</span>] = default_key
+<span class="line-number">9</span>        api_key = default_key
+<span class="line-number">10</span>    
+<span class="line-number">11</span>    <span class="keyword">try</span>:
+<span class="line-number">12</span>        <span class="comment"># Test API key by creating generator</span>
+<span class="line-number">13</span>        logger.info(<span class="string">"Testiranje API key-a sa Gemini..."</span>)
+<span class="line-number">14</span>        gen = GeminiQuestionGenerator(api_key=api_key)
+<span class="line-number">15</span>        logger.info(<span class="string">"✅ GOOGLE_API_KEY je validan i spreman za upotrebu"</span>)
+<span class="line-number">16</span>        <span class="keyword">return</span> <span class="keyword">True</span>
+<span class="line-number">17</span>    <span class="keyword">except</span> ValueError <span class="keyword">as</span> e:
+<span class="line-number">18</span>        error_msg = str(e)
+<span class="line-number">19</span>        logger.error(f<span class="string">"❌ GOOGLE_API_KEY greška (ValueError): {error_msg}"</span>)
+<span class="line-number">20</span>        <span class="keyword">if</span> <span class="string">'API key'</span> <span class="keyword">in</span> error_msg.lower() <span class="keyword">or</span> <span class="string">'key'</span> <span class="keyword">in</span> error_msg.lower():
+<span class="line-number">21</span>            print(f<span class="string">"\n❌ API KEY GREŠKA: {error_msg}"</span>)
+<span class="line-number">22</span>            print(<span class="string">"   Proverite da li je API key ispravan."</span>)
+<span class="line-number">23</span>        <span class="keyword">return</span> <span class="keyword">False</span>
+<span class="line-number">24</span>    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+<span class="line-number">25</span>        error_msg = str(e)
+<span class="line-number">26</span>        logger.error(f<span class="string">"❌ GOOGLE_API_KEY greška: {error_msg}"</span>)
+<span class="line-number">27</span>        print(f<span class="string">"\n❌ GREŠKA PRI PROVERI API KEY-A: {error_msg}"</span>)
+<span class="line-number">28</span>        print(<span class="string">"   Tip greške:"</span>, type(e).__name__)
+<span class="line-number">29</span>        <span class="keyword">return</span> <span class="keyword">False</span></code>
+                        </div>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> bool - True ako je API ključ validan, False inače.
+                    </div>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Postavlja default API ključ ako GOOGLE_API_KEY nije postavljen</li>
+                            <li>Loguje rezultate validacije</li>
+                            <li>Prikazuje upozorenja ako ključ nije validan</li>
+                        </ul>
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Handluje ValueError ako je API ključ nevalidan</li>
+                            <li>Handluje generičke Exception-e tokom validacije</li>
+                            <li>Loguje detaljne informacije o greškama za debugging</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>health_check()</h4>
+                    <p>Health check endpoint za monitoring statusa API servera. Ovaj endpoint se koristi za proveru da li je server pokrenut i da li je API ključ validan. Korisno je za monitoring alate i za brzu proveru statusa sistema. Endpoint osigurava da je API ključ postavljen pre provere, i vraća informacije o statusu servera i validnosti API ključa.</p>
+                    <dl class="param-list">
+                        <dt>Ruta:</dt>
+                        <dd>GET /api/health</dd>
+                    </dl>
+                    <div class="code-block">
+<code><span class="line-number">1</span>@app.route(<span class="string">'/api/health'</span>, methods=[<span class="string">'GET'</span>])
+<span class="line-number">2</span><span class="keyword">def</span> <span class="function">health_check</span>():
+<span class="line-number">3</span>    <span class="string">"""Health check endpoint."""</span>
+<span class="line-number">4</span>    <span class="comment"># Ensure API key is set before checking</span>
+<span class="line-number">5</span>    <span class="keyword">if</span> <span class="keyword">not</span> os.getenv(<span class="string">'GOOGLE_API_KEY'</span>):
+<span class="line-number">6</span>        default_key = <span class="string">"AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"</span>
+<span class="line-number">7</span>        os.environ[<span class="string">'GOOGLE_API_KEY'</span>] = default_key
+<span class="line-number">8</span>        logger.info(<span class="string">"GOOGLE_API_KEY nije postavljen u health check, koristim default key"</span>)
+<span class="line-number">9</span>    
+<span class="line-number">10</span>    api_key_valid = check_api_key()
+<span class="line-number">11</span>    <span class="keyword">return</span> jsonify({
+<span class="line-number">12</span>        <span class="string">'status'</span>: <span class="string">'ok'</span>,
+<span class="line-number">13</span>        <span class="string">'api_key_valid'</span>: api_key_valid,
+<span class="line-number">14</span>        <span class="string">'message'</span>: <span class="string">'API key je validan'</span> <span class="keyword">if</span> api_key_valid <span class="keyword">else</span> <span class="string">'API key nije postavljen ili nije validan'</span>
+<span class="line-number">15</span>    })</code>
+                        </div>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> JSON odgovor sa poljima status, api_key_valid, i message.
+                    </div>
+                    <div class="example">
+                        <strong>Primer odgovora:</strong>
+                        <div class="code-block">
+<code><span class="line-number">1</span>{
+<span class="line-number">2</span>    <span class="string">"status"</span>: <span class="string">"ok"</span>,
+<span class="line-number">3</span>    <span class="string">"api_key_valid"</span>: <span class="keyword">true</span>,
+<span class="line-number">4</span>    <span class="string">"message"</span>: <span class="string">"API key je validan"</span>
+<span class="line-number">5</span>}</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>upload_pdf()</h4>
+                    <p>Upravlja upload-om PDF fajla i parsiranjem sa real-time progress updates koristeći Server-Sent Events (SSE). Ova funkcija je jedna od najkompleksnijih u sistemu jer upravlja asinhronim procesiranjem PDF-a u pozadinskoj niti i streamuje progress updates klijentu. Funkcija koristi threading da ne blokira glavnu nit tokom parsiranja velikih PDF fajlova.</p>
+                    <p>Proces se sastoji od nekoliko koraka: prvo se PDF fajl čuva u privremeni fajl, zatim se pokreće pozadinska nit koja parsira PDF, chunkuje tekst, i filtrira chunk-ove po temama ako su navedene ključne reči. Tokom svakog koraka, progress callback šalje update-e preko queue-a, koji se zatim streamuju klijentu preko SSE protokola.</p>
+                    <dl class="param-list">
+                        <dt>Ruta:</dt>
+                        <dd>POST /api/upload_pdf</dd>
+                        <dt>Form podaci:</dt>
+                        <dd>pdf_file: Upload-ovani PDF fajl (obavezno)</dd>
+                        <dd>quiz_title: Naslov kviza (opciono, default: "Untitled Quiz")</dd>
+                        <dd>num_questions: Broj pitanja za generisanje (opciono, default: 10)</dd>
+                        <dd>chunk_size: Veličina text chunk-ova u rečima (opciono, default: 1500)</dd>
+                        <dd>topic_keywords: Ključne reči odvojene zarezom za filtriranje (opciono)</dd>
+                    </dl>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> Server-Sent Events stream sa progress update-ima i finalnim rezultatom.
+                    </div>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Kreira privremeni fajl za upload-ovani PDF</li>
+                            <li>Parsira PDF u pozadinskoj niti</li>
+                            <li>Briše privremeni fajl nakon procesiranja</li>
+                            <li>Streamuje progress update-e klijentu</li>
+                            <li>Loguje sve korake procesiranja</li>
+                        </ul>
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Handluje prazne ili korumpirane PDF fajlove</li>
+                            <li>Upravlja čišćenjem fajlova na greškama</li>
+                            <li>Elegantno handluje threading exception-e</li>
+                            <li>Handluje slučajeve kada PDF ne može biti parsiran</li>
+                            <li>Handluje slučajeve kada nisu pronađeni relevantni segmenti</li>
+                            <li>Osigurava da se privremeni fajl uvek obriše, čak i na greškama</li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+<code><span class="line-number">1</span>@app.route(<span class="string">'/api/upload_pdf'</span>, methods=[<span class="string">'POST'</span>])
+<span class="line-number">2</span><span class="keyword">def</span> <span class="function">upload_pdf</span>():
+<span class="line-number">3</span>    <span class="string">"""Upload i parsiranje PDF-a sa real-time progress updates."""</span>
+<span class="line-number">4</span>    <span class="keyword">try</span>:
+<span class="line-number">5</span>        <span class="keyword">if</span> <span class="string">'pdf_file'</span> <span class="keyword">not</span> <span class="keyword">in</span> request.files:
+<span class="line-number">6</span>            <span class="keyword">return</span> jsonify({<span class="string">'error'</span>: <span class="string">'PDF fajl nije priložen'</span>}), <span class="number">400</span>
+<span class="line-number">7</span>        
+<span class="line-number">8</span>        pdf_file = request.files[<span class="string">'pdf_file'</span>]
+<span class="line-number">9</span>        quiz_title = request.form.get(<span class="string">'quiz_title'</span>, <span class="string">'Untitled Quiz'</span>)
+<span class="line-number">10</span>        num_questions = int(request.form.get(<span class="string">'num_questions'</span>, <span class="number">10</span>))
+<span class="line-number">11</span>        chunk_size = int(request.form.get(<span class="string">'chunk_size'</span>, <span class="number">1500</span>))
+<span class="line-number">12</span>        topic_keywords = request.form.get(<span class="string">'topic_keywords'</span>, <span class="string">''</span>)
+<span class="line-number">13</span>        
+<span class="line-number">14</span>        <span class="comment"># Save uploaded file temporarily</span>
+<span class="line-number">15</span>        <span class="keyword">with</span> tempfile.NamedTemporaryFile(delete=<span class="keyword">False</span>, suffix=<span class="string">'.pdf'</span>) <span class="keyword">as</span> tmp_file:
+<span class="line-number">16</span>            pdf_file.save(tmp_file.name)
+<span class="line-number">17</span>            tmp_path = tmp_file.name
+<span class="line-number">18</span>        
+<span class="line-number">19</span>        <span class="comment"># Create progress queue for streaming updates</span>
+<span class="line-number">20</span>        progress_queue = queue.Queue()
+<span class="line-number">21</span>        
+<span class="line-number">22</span>        <span class="keyword">def</span> <span class="function">progress_callback</span>(current_page, total_pages, status):
+<span class="line-number">23</span>            <span class="string">"""Callback za progres parsiranja."""</span>
+<span class="line-number">24</span>            progress_data = {
+<span class="line-number">25</span>                <span class="string">'type'</span>: <span class="string">'progress'</span>,
+<span class="line-number">26</span>                <span class="string">'current_page'</span>: current_page,
+<span class="line-number">27</span>                <span class="string">'total_pages'</span>: total_pages,
+<span class="line-number">28</span>                <span class="string">'progress_pct'</span>: int((current_page / total_pages * <span class="number">100</span>)) <span class="keyword">if</span> total_pages > <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>,
+<span class="line-number">29</span>                <span class="string">'status'</span>: status,
+<span class="line-number">30</span>                <span class="string">'timestamp'</span>: time.time()
+<span class="line-number">31</span>            }
+<span class="line-number">32</span>            progress_queue.put(progress_data)
+<span class="line-number">33</span>        
+<span class="line-number">34</span>        <span class="keyword">def</span> <span class="function">parse_pdf</span>():
+<span class="line-number">35</span>            <span class="string">"""Parsira PDF u pozadini i šalje progres."""</span>
+<span class="line-number">36</span>            <span class="keyword">try</span>:
+<span class="line-number">37</span>                <span class="comment"># Parse PDF with progress callback</span>
+<span class="line-number">38</span>                parser = PDFParser(progress_callback=progress_callback)
+<span class="line-number">39</span>                text = parser.extract_text(tmp_path)
+<span class="line-number">40</span>                
+<span class="line-number">41</span>                <span class="keyword">if</span> <span class="keyword">not</span> text <span class="keyword">or</span> len(text.strip()) < <span class="number">100</span>:
+<span class="line-number">42</span>                    progress_queue.put({
+<span class="line-number">43</span>                        <span class="string">'type'</span>: <span class="string">'error'</span>,
+<span class="line-number">44</span>                        <span class="string">'message'</span>: <span class="string">'PDF je prazan ili nije mogao biti parsiran'</span>
+<span class="line-number">45</span>                    })
+<span class="line-number">46</span>                    <span class="keyword">return</span>
+<span class="line-number">47</span>                
+<span class="line-number">48</span>                <span class="comment"># Chunking progress callback</span>
+<span class="line-number">49</span>                <span class="keyword">def</span> <span class="function">chunking_progress_callback</span>(current_chunk, total_chunks, status):
+<span class="line-number">50</span>                    <span class="string">"""Callback za progres chunking-a."""</span>
+<span class="line-number">51</span>                    progress_data = {
+<span class="line-number">52</span>                        <span class="string">'type'</span>: <span class="string">'progress'</span>,
+<span class="line-number">53</span>                        <span class="string">'stage'</span>: <span class="string">'chunking'</span>,
+<span class="line-number">54</span>                        <span class="string">'current_chunk'</span>: current_chunk,
+<span class="line-number">55</span>                        <span class="string">'total_chunks'</span>: total_chunks,
+<span class="line-number">56</span>                        <span class="string">'progress_pct'</span>: int((current_chunk / total_chunks * <span class="number">100</span>)) <span class="keyword">if</span> total_chunks > <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>,
+<span class="line-number">57</span>                        <span class="string">'status'</span>: status,
+<span class="line-number">58</span>                        <span class="string">'timestamp'</span>: time.time()
+<span class="line-number">59</span>                    }
+<span class="line-number">60</span>                    progress_queue.put(progress_data)
+<span class="line-number">61</span>                
+<span class="line-number">62</span>                chunker = TextChunker(
+<span class="line-number">63</span>                    chunk_size=chunk_size,
+<span class="line-number">64</span>                    chunk_overlap=<span class="number">200</span>,
+<span class="line-number">65</span>                    progress_callback=chunking_progress_callback
+<span class="line-number">66</span>                )
+<span class="line-number">67</span>                chunks = chunker.chunk_text(text, method=<span class="string">'words'</span>)
+<span class="line-number">68</span>                
+<span class="line-number">69</span>                <span class="comment"># Filter by topic if keywords provided</span>
+<span class="line-number">70</span>                <span class="keyword">if</span> topic_keywords:
+<span class="line-number">71</span>                    keywords = [kw.strip() <span class="keyword">for</span> kw <span class="keyword">in</span> topic_keywords.split(<span class="string">','</span>)]
+<span class="line-number">72</span>                    chunks = chunker.filter_chunks_by_topic(chunks, keywords)
+<span class="line-number">73</span>                
+<span class="line-number">74</span>                <span class="keyword">if</span> <span class="keyword">not</span> chunks:
+<span class="line-number">75</span>                    progress_queue.put({
+<span class="line-number">76</span>                        <span class="string">'type'</span>: <span class="string">'error'</span>,
+<span class="line-number">77</span>                        <span class="string">'message'</span>: <span class="string">'Nisu pronađeni relevantni segmenti u PDF-u'</span>
+<span class="line-number">78</span>                    })
+<span class="line-number">79</span>                    <span class="keyword">return</span>
+<span class="line-number">80</span>                
+<span class="line-number">81</span>                <span class="comment"># Clean up temp file</span>
+<span class="line-number">82</span>                os.unlink(tmp_path)
+<span class="line-number">83</span>                
+<span class="line-number">84</span>                <span class="comment"># Final result</span>
+<span class="line-number">85</span>                progress_queue.put({
+<span class="line-number">86</span>                    <span class="string">'type'</span>: <span class="string">'complete'</span>,
+<span class="line-number">87</span>                    <span class="string">'success'</span>: <span class="keyword">True</span>,
+<span class="line-number">88</span>                    <span class="string">'chunks'</span>: chunks,
+<span class="line-number">89</span>                    <span class="string">'num_chunks'</span>: len(chunks),
+<span class="line-number">90</span>                    <span class="string">'message'</span>: f<span class="string">'PDF uspešno parsiran. Pronađeno {len(chunks)} segmenata.'</span>
+<span class="line-number">91</span>                })
+<span class="line-number">92</span>                
+<span class="line-number">93</span>            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+<span class="line-number">94</span>                <span class="comment"># Clean up temp file on error</span>
+<span class="line-number">95</span>                <span class="keyword">if</span> os.path.exists(tmp_path):
+<span class="line-number">96</span>                    os.unlink(tmp_path)
+<span class="line-number">97</span>                progress_queue.put({
+<span class="line-number">98</span>                    <span class="string">'type'</span>: <span class="string">'error'</span>,
+<span class="line-number">99</span>                    <span class="string">'message'</span>: str(e)
+<span class="line-number">100</span>                })
+<span class="line-number">101</span>        
+<span class="line-number">102</span>        <span class="comment"># Start parsing in background thread</span>
+<span class="line-number">103</span>        parse_thread = threading.Thread(target=parse_pdf)
+<span class="line-number">104</span>        parse_thread.daemon = <span class="keyword">True</span>
+<span class="line-number">105</span>        parse_thread.start()
+<span class="line-number">106</span>        
+<span class="line-number">107</span>        <span class="comment"># Stream progress updates</span>
+<span class="line-number">108</span>        <span class="keyword">def</span> <span class="function">generate</span>():
+<span class="line-number">109</span>            <span class="keyword">while</span> <span class="keyword">True</span>:
+<span class="line-number">110</span>                <span class="keyword">try</span>:
+<span class="line-number">111</span>                    data = progress_queue.get(timeout=<span class="number">1</span>)
+<span class="line-number">112</span>                    <span class="keyword">yield</span> f<span class="string">"data: {json_lib.dumps(data)}\n\n"</span>
+<span class="line-number">113</span>                    <span class="keyword">if</span> data.get(<span class="string">'type'</span>) <span class="keyword">in</span> [<span class="string">'complete'</span>, <span class="string">'error'</span>]:
+<span class="line-number">114</span>                        <span class="keyword">break</span>
+<span class="line-number">115</span>                <span class="keyword">except</span> queue.Empty:
+<span class="line-number">116</span>                    <span class="keyword">continue</span>
+<span class="line-number">117</span>        
+<span class="line-number">118</span>        <span class="keyword">return</span> Response(
+<span class="line-number">119</span>            stream_with_context(generate()),
+<span class="line-number">120</span>            mimetype=<span class="string">'text/event-stream'</span>
+<span class="line-number">121</span>        )
+<span class="line-number">122</span>    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+<span class="line-number">123</span>        logger.error(f<span class="string">"Error in upload_pdf: {e}"</span>)
+<span class="line-number">124</span>        <span class="keyword">return</span> jsonify({<span class="string">'error'</span>: str(e)}), <span class="number">500</span></code>
+                    </div>
+                    <div class="example">
+                        <strong>Primer SSE odgovora:</strong>
+                        <div class="code-block">
+<code><span class="line-number">1</span><span class="comment"># Progress update tokom parsiranja</span>
+<span class="line-number">2</span>data: {
+<span class="line-number">3</span>    <span class="string">"type"</span>: <span class="string">"progress"</span>,
+<span class="line-number">4</span>    <span class="string">"current_page"</span>: <span class="number">5</span>,
+<span class="line-number">5</span>    <span class="string">"total_pages"</span>: <span class="number">100</span>,
+<span class="line-number">6</span>    <span class="string">"progress_pct"</span>: <span class="number">5</span>,
+<span class="line-number">7</span>    <span class="string">"status"</span>: <span class="string">"Parsiranje stranice 5/100 (5%)..."</span>
+<span class="line-number">8</span>}
+<span class="line-number">9</span>
+<span class="line-number">10</span><span class="comment"># Finalni rezultat</span>
+<span class="line-number">11</span>data: {
+<span class="line-number">12</span>    <span class="string">"type"</span>: <span class="string">"complete"</span>,
+<span class="line-number">13</span>    <span class="string">"success"</span>: <span class="keyword">true</span>,
+<span class="line-number">14</span>    <span class="string">"num_chunks"</span>: <span class="number">15</span>,
+<span class="line-number">15</span>    <span class="string">"message"</span>: <span class="string">"PDF uspešno parsiran. Pronađeno 15 segmenata."</span>
+<span class="line-number">16</span>}</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>generate_questions()</h4>
+                    <p>Generiše pitanja za kviz iz parsiranih PDF chunk-ova koristeći Google Gemini API.</p>
+                    <dl class="param-list">
+                        <dt>Ruta:</dt>
+                        <dd>POST /api/generate_questions</dd>
+                        <dt>Request Body (JSON):</dt>
+                        <dd>chunks: Lista tekstualnih chunk-ova iz PDF-a</dd>
+                        <dd>num_questions: Ukupan broj pitanja za generisanje</dd>
+                        <dd>difficulty: Nivo težine pitanja (easy/medium/hard)</dd>
+                    </dl>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> JSON odgovor sa generisanim nizom pitanja.
+                    </div>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Poziva Google Gemini API</li>
+                            <li>Implementira rate limiting da izbjegne greške prekoračenja kvote</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- database.py -->
+            <section id="database-py">
+                <h3>database.py - Upravljanje Bazom Podataka</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> SQLite database management modul za korisnike, kvizove i rezultate. Pruža CRUD operacije sa connection pooling-om i WAL modom za bolju konkurentnost.</p>
+                    <p>Ovaj modul je odgovoran za sve operacije sa bazom podataka. Koristi SQLite bazu podataka koja je lagana, ne zahteva odvojeni server proces, i savršena je za aplikacije srednje veličine. Modul implementira WAL (Write-Ahead Logging) mode koji omogućava bolju konkurentnost - više korisnika može istovremeno da čita i piše u bazu podataka bez lock-ova.</p>
+                    <p>Modul upravlja tri glavne tabele: users (korisnici), quizzes (kvizovi), i quiz_results (rezultati kvizova). Svaka tabela ima odgovarajuće indekse za brže pretrage, i foreign key constraint-e za osiguranje referencijalnog integriteta podataka.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>Database</h4>
+                    <p>Glavna klasa za upravljanje bazom podataka koja pruža sve database operacije. Ova klasa je singleton-like dizajn - svaka instanca koristi istu bazu podataka, ali svaka konekcija je nezavisna što omogućava thread-safe operacije.</p>
+                    
+                    <div class="function-doc">
+                        <h4>__init__(db_path: str = "quizmaster.db")</h4>
+                        <p>Inicijalizuje database konekciju i kreira tabele ako ne postoje. Ova metoda se poziva automatski kada se kreira instanca Database klase. Metoda prvo kreira konekciju sa bazom podataka, zatim proverava da li tabele postoje, i ako ne postoje, kreira ih sa odgovarajućim strukturama i constraint-ima.</p>
+                        <dl class="param-list">
+                            <dt>db_path:</dt>
+                            <dd>Putanja do SQLite database fajla (default: "quizmaster.db")</dd>
+                        </dl>
+                        <div class="code-block">
+<code><span class="line-number">1</span><span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, db_path: str = <span class="string">"quizmaster.db"</span>):
+<span class="line-number">2</span>    <span class="string">"""</span>
+<span class="line-number">3</span>    <span class="string">Inicijalizuje bazu podataka.</span>
+<span class="line-number">4</span>    <span class="string">    </span>
+<span class="line-number">5</span>    <span class="string">    Parametri:</span>
+<span class="line-number">6</span>    <span class="string">        db_path: Putanja do SQLite baze</span>
+<span class="line-number">7</span>    <span class="string">    """</span>
+<span class="line-number">8</span>    <span class="keyword">self</span>.db_path = db_path
+<span class="line-number">9</span>    <span class="keyword">self</span>.init_database()</code>
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Kreira database fajl ako ne postoji</li>
+                                <li>Inicijalizuje sve potrebne tabele (users, quizzes, quiz_results)</li>
+                                <li>Omogućava WAL mode za bolju konkurentnost</li>
+                                <li>Kreira indekse za brže pretrage</li>
+                                <li>Dodaje dodatne kolone ako su potrebne (migracije)</li>
+                            </ul>
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Handluje slučajeve kada database fajl već postoji</li>
+                                <li>Handluje slučajeve kada tabele već postoje (CREATE TABLE IF NOT EXISTS)</li>
+                                <li>Handluje slučajeve kada kolone već postoje (ALTER TABLE sa try-except)</li>
+                                <li>Ignoriše greške ako WAL mode nije podržan</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>get_connection()</h4>
+                        <p>Vraća database konekciju sa WAL modom omogućenim. Ova metoda se poziva pri svakoj database operaciji da osigura da konekcija ima prave postavke. WAL mode omogućava da više korisnika istovremeno čita i piše u bazu podataka bez lock-ova, što značajno poboljšava performanse u multi-user okruženjima.</p>
+                        <div class="code-block">
+<code><span class="line-number">1</span><span class="keyword">def</span> <span class="function">get_connection</span>(<span class="keyword">self</span>):
+<span class="line-number">2</span>    <span class="string">"""Vraća konekciju sa bazom podataka."""</span>
+<span class="line-number">3</span>    conn = sqlite3.connect(
+<span class="line-number">4</span>        <span class="keyword">self</span>.db_path,
+<span class="line-number">5</span>        timeout=<span class="number">20.0</span>  <span class="comment"># 20 sekundi timeout za lock</span>
+<span class="line-number">6</span>    )
+<span class="line-number">7</span>    conn.row_factory = sqlite3.Row
+<span class="line-number">8</span>    <span class="comment"># Enable WAL mode for better concurrency</span>
+<span class="line-number">9</span>    <span class="keyword">try</span>:
+<span class="line-number">10</span>        conn.execute(<span class="string">'PRAGMA journal_mode=WAL'</span>)
+<span class="line-number">11</span>    <span class="keyword">except</span>:
+<span class="line-number">12</span>        <span class="keyword">pass</span>  <span class="comment"># Ignore if WAL is not supported</span>
+<span class="line-number">13</span>    <span class="keyword">return</span> conn</code>
+                        </div>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> sqlite3.Connection - Database connection objekat sa row_factory postavljenim na sqlite3.Row za lakši pristup podacima.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Kreira novu konekciju sa bazom podataka</li>
+                                <li>Postavlja row_factory na sqlite3.Row</li>
+                                <li>Pokušava da omogući WAL mode</li>
+                            </ul>
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>20-sekundni timeout za database lock-ove</li>
+                                <li>Elegantno handluje scenarije kada WAL mode nije podržan</li>
+                                <li>Handluje connection error-e</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>create_user(username: str, email: str, password_hash: str) -> Optional[int]</h4>
+                        <p>Kreira novog korisnika u bazi podataka. Ova metoda dodaje novog korisnika sa osnovnim informacijama i inicijalizuje njegove statistike na nule. Username i email moraju biti jedinstveni - ako već postoje, metoda vraća None bez kreiranja korisnika.</p>
+                        <dl class="param-list">
+                            <dt>username:</dt>
+                            <dd>Jedinstveno korisničko ime (mora biti jedinstveno)</dd>
+                            <dt>email:</dt>
+                            <dd>Jedinstvena email adresa (mora biti jedinstvena)</dd>
+                            <dt>password_hash:</dt>
+                            <dd>Bcrypt hash-ovana lozinka (ne plain text!)</dd>
+                        </dl>
+                        <div class="code-block">
+<code><span class="line-number">1</span><span class="keyword">def</span> <span class="function">create_user</span>(
+<span class="line-number">2</span>    <span class="keyword">self</span>,
+<span class="line-number">3</span>    username: str,
+<span class="line-number">4</span>    email: str,
+<span class="line-number">5</span>    password_hash: str
+<span class="line-number">6</span>) -> Optional[int]:
+<span class="line-number">7</span>    <span class="string">"""Kreira novog korisnika."""</span>
+<span class="line-number">8</span>    conn = <span class="keyword">self</span>.get_connection()
+<span class="line-number">9</span>    cursor = conn.cursor()
+<span class="line-number">10</span>    <span class="keyword">try</span>:
+<span class="line-number">11</span>        cursor.execute(<span class="string">"""</span>
+<span class="line-number">12</span>            <span class="string">INSERT INTO users (username, email, password_hash)</span>
+<span class="line-number">13</span>            <span class="string">VALUES (?, ?, ?)</span>
+<span class="line-number">14</span>        <span class="string">"""</span>, (username, email, password_hash))
+<span class="line-number">15</span>        user_id = cursor.lastrowid
+<span class="line-number">16</span>        conn.commit()
+<span class="line-number">17</span>        conn.close()
+<span class="line-number">18</span>        <span class="keyword">return</span> user_id
+<span class="line-number">19</span>    <span class="keyword">except</span> sqlite3.IntegrityError:
+<span class="line-number">20</span>        conn.close()
+<span class="line-number">21</span>        <span class="keyword">return</span> <span class="keyword">None</span></code>
+                        </div>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[int] - User ID ako je uspešno, None ako username/email već postoje.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Dodaje novi red u users tabelu</li>
+                                <li>Inicijalizuje total_quizzes, total_score, i average_accuracy na 0</li>
+                                <li>Postavlja created_at timestamp na trenutno vreme</li>
+                            </ul>
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Vraća None na IntegrityError (duplikat username/email)</li>
+                                <li>Handluje database connection error-e</li>
+                                <li>Osigurava da se konekcija uvek zatvori, čak i na greškama</li>
+                            </ul>
+                        </div>
+                        <div class="example">
+                            <strong>Primer upotrebe:</strong>
+                            <div class="code-block">
+<code><span class="line-number">1</span><span class="comment"># Kreiranje instance Database klase</span>
+<span class="line-number">2</span>db = Database()
+<span class="line-number">3</span>
+<span class="line-number">4</span><span class="comment"># Hash-ovanje lozinke pre čuvanja</span>
+<span class="line-number">5</span>password_hash = auth_manager.hash_password(<span class="string">"moja_lozinka"</span>)
+<span class="line-number">6</span>
+<span class="line-number">7</span><span class="comment"># Kreiranje novog korisnika</span>
+<span class="line-number">8</span>user_id = db.create_user(
+<span class="line-number">9</span>    <span class="string">"korisnik123"</span>,
+<span class="line-number">10</span>    <span class="string">"email@example.com"</span>,
+<span class="line-number">11</span>    password_hash
+<span class="line-number">12</span>)
+<span class="line-number">13</span>
+<span class="line-number">14</span><span class="keyword">if</span> user_id:
+<span class="line-number">15</span>    print(f<span class="string">"Korisnik kreiran sa ID: {user_id}"</span>)
+<span class="line-number">16</span><span class="keyword">else</span>:
+<span class="line-number">17</span>    print(<span class="string">"Korisnik već postoji"</span>)</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>get_user_by_username(username: str) -> Optional[Dict]</h4>
+                        <p>Vraća korisnika po korisničkom imenu.</p>
+                        <dl class="param-list">
+                            <dt>username:</dt>
+                            <dd>Korisničko ime za pretragu</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[Dict] - Rečnik korisnika ako je pronađen, None inače.
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>create_quiz(user_id: int, title: str, pdf_filename: str, ...) -> Optional[int]</h4>
+                        <p>Kreira novi kviz u bazi podataka.</p>
+                        <dl class="param-list">
+                            <dt>user_id:</dt>
+                            <dd>ID korisnika koji kreira kviz</dd>
+                            <dt>title:</dt>
+                            <dd>Naslov kviza</dd>
+                            <dt>pdf_filename:</dt>
+                            <dd>Originalno ime PDF fajla</dd>
+                            <dt>chunks_data:</dt>
+                            <dd>JSON string tekstualnih chunk-ova</dd>
+                            <dt>questions_data:</dt>
+                            <dd>JSON string generisanih pitanja</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[int] - ID kviza ako je uspješno, None pri grešci.
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>save_quiz_result(quiz_id: int, user_id: int, score: int, ...) -> Optional[int]</h4>
+                        <p>Čuva rezultat kviza i ažurira statistike korisnika.</p>
+                        <dl class="param-list">
+                            <dt>quiz_id:</dt>
+                            <dd>ID kviza</dd>
+                            <dt>user_id:</dt>
+                            <dd>ID korisnika koji je uradio kviz</dd>
+                            <dt>score:</dt>
+                            <dd>Broj tačnih odgovora</dd>
+                            <dt>total_questions:</dt>
+                            <dd>Ukupan broj pitanja</dd>
+                            <dt>accuracy:</dt>
+                            <dd>Procenat tačnosti (0.0-1.0)</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[int] - ID rezultata ako je uspješno, None pri grešci.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Ažurira brojač total_quizzes korisnika</li>
+                                <li>Ažurira total_score korisnika</li>
+                                <li>Ponovo računa average_accuracy korisnika</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- pdf_parser.py -->
+            <section id="pdf-parser-py">
+                <h3>pdf_parser.py - PDF Document Parsing</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Ekstraktuje tekst iz PDF dokumenata koristeći pdfplumber kao primarni parser sa PyPDF2 fallback-om. Podržava velike PDF-ove sa progress callback-ima.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>PDFParser</h4>
+                    <p>PDF parsing klasa sa podrškom za dva parsera i praćenje napretka.</p>
+
+                    <div class="function-doc">
+                        <h4>__init__(use_pdfplumber: bool = True, progress_callback=None)</h4>
+                        <p>Inicijalizuje PDF parser sa preferiranom bibliotekom i opcionim progress callback-om.</p>
+                        <dl class="param-list">
+                            <dt>use_pdfplumber:</dt>
+                            <dd>Ako je True, koristi pdfplumber; inače koristi PyPDF2</dd>
+                            <dt>progress_callback:</dt>
+                            <dd>Funkcija koja se poziva sa (current_page, total_pages, status) za progress update-e</dd>
+                        </dl>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>extract_text(pdf_path: str) -> str</h4>
+                        <p>Ekstraktuje sav tekst iz PDF fajla.</p>
+                        <dl class="param-list">
+                            <dt>pdf_path:</dt>
+                            <dd>Putanja do PDF fajla</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> str - Ekstraktovani tekst sa svih stranica.
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Automatski prelazi na alternativni parser pri grešci</li>
+                                <li>Rukuje korumpiranim ili šifrovanim PDF-ovima</li>
+                                <li>Loguje greške ali nastavlja sa fallback-om</li>
+                            </ul>
+                        </div>
+                        <div class="example">
+                            <strong>Primjer:</strong>
+                            <div class="code-block">
+<code>parser = PDFParser(progress_callback=my_callback)
+text = parser.extract_text(<span class="string">"document.pdf"</span>)</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- chunking.py -->
+            <section id="chunking-py">
+                <h3>chunking.py - Text Segmentation</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Segmentira tekst na manje chunk-ove po broju riječi ili poglavlja. Podržava konfigurabilnu veličinu chunk-a i preklapanje, sa opcionim filtriranjem po ključnim riječima.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>TextChunker</h4>
+                    <p>Text chunking klasa za dijeljenje dokumenata na procesirajuće segmente.</p>
+
+                    <div class="function-doc">
+                        <h4>chunk_text(text: str, method: str = 'words') -> List[Dict]</h4>
+                        <p>Dijeli tekst koristeći određenu metodu.</p>
+                        <dl class="param-list">
+                            <dt>text:</dt>
+                            <dd>Tekst za chunking</dd>
+                            <dt>method:</dt>
+                            <dd>'words' za chunking po riječima, 'chapters' za chunking po poglavljima</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> List[Dict] - Lista rečnika chunk-ova sa tekstom i metapodacima.
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Sprječava beskonačne petlje kada overlap >= chunk_size</li>
+                                <li>Rukuje praznim ili vrlo kratkim tekstovima</li>
+                                <li>Osigurava napredak čak i kada overlap ne napreduje</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>filter_chunks_by_topic(chunks: List[Dict], keywords: List[str]) -> List[Dict]</h4>
+                        <p>Filtrira chunk-ove koji sadrže određene ključne riječi.</p>
+                        <dl class="param-list">
+                            <dt>chunks:</dt>
+                            <dd>Lista rečnika chunk-ova</dd>
+                            <dt>keywords:</dt>
+                            <dd>Lista ključnih riječi za pretragu</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> List[Dict] - Filtrirani chunk-ovi koji sadrže barem jednu ključnu riječ.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- google_gemini_generator.py -->
+            <section id="gemini-generator-py">
+                <h3>google_gemini_generator.py - Question Generation with Google Gemini</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Generiše multiple-choice pitanja iz tekstualnih chunk-ova koristeći Google Gemini API. Podržava više Gemini modela sa automatskim fallback-om i rate limiting-om.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>GeminiQuestionGenerator</h4>
+                    <p>Generator pitanja koristeći Google Gemini API sa model fallback-om i rate limiting-om.</p>
+
+                    <div class="function-doc">
+                        <h4>generate_questions_from_chunk(chunk: Dict, num_questions: int = 1, difficulty: str = 'medium') -> List[Dict]</h4>
+                        <p>Generiše pitanja iz tekstualnog chunk-a.</p>
+                        <dl class="param-list">
+                            <dt>chunk:</dt>
+                            <dd>Rečnik koji sadrži tekst chunk-a i metapodatke</dd>
+                            <dt>num_questions:</dt>
+                            <dd>Broj pitanja za generisanje (default: 1)</dd>
+                            <dt>difficulty:</dt>
+                            <dd>Nivo težine: 'easy', 'medium', ili 'hard'</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> List[Dict] - Lista rečnika pitanja sa question, options, correct_answer, i explanation.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Poziva Google Gemini API</li>
+                                <li>Implementira automatsko kašnjenje između zahtjeva da poštuje rate limite</li>
+                                <li>Rotira kroz dostupne modele pri grešci</li>
+                            </ul>
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Rukuje greškama prekoračenja API rate limita</li>
+                                <li>Prelazi na alternativne modele pri grešci</li>
+                                <li>Rukuje pogrešno formatiranim API odgovorima</li>
+                                <li>Ponovo pokušava sa eksponencijalnim backoff-om</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- rl_agent.py -->
+            <section id="rl-agent-py">
+                <h3>rl_agent.py - Reinforcement Learning Agent</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Implementira Reinforcement Learning agent koristeći PPO-like pristup za adaptivno učenje. Prati performanse korisnika po chunk-u i prilagođava selekciju pitanja da se fokusira na slabije oblasti.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>RLAgent</h4>
+                    <p>Reinforcement Learning agent za adaptivnu selekciju pitanja.</p>
+
+                    <div class="function-doc">
+                        <h4>update_state(chunk_id: int, is_correct: bool, difficulty: float = 0.5)</h4>
+                        <p>Ažurira stanje agenta na osnovu korisnikovog odgovora.</p>
+                        <dl class="param-list">
+                            <dt>chunk_id:</dt>
+                            <dd>ID chunk-a iz kojeg je pitanje došlo</dd>
+                            <dt>is_correct:</dt>
+                            <dd>Da li je odgovor bio tačan</dd>
+                            <dt>difficulty:</dt>
+                            <dd>Težina pitanja (0.0-1.0)</dd>
+                        </dl>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Ažurira statistike performansi chunk-a</li>
+                                <li>Ponovo računa tačnost chunk-a</li>
+                                <li>Ažurira distribuciju politike</li>
+                                <li>Dodaje unos u historiju</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>select_chunk(available_chunks: List[int]) -> int</h4>
+                        <p>Bira sljedeći chunk na osnovu RL politike koristeći epsilon-greedy strategiju.</p>
+                        <dl class="param-list">
+                            <dt>available_chunks:</dt>
+                            <dd>Lista dostupnih ID-jeva chunk-ova</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> int - ID odabranog chunk-a.
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Koristi exploration rate za slučajnu selekciju</li>
+                                <li>Favorizuje chunk-ove sa nižom tačnošću (slabije oblasti)</li>
+                                <li>Rukuje praznom listom available_chunks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- quiz_engine.py -->
+            <section id="quiz-engine-py">
+                <h3>quiz_engine.py - Quiz Logic Engine</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Upravlja tokom kviza, koordinira RL agenta i generator pitanja. Inicijalizuje pitanja, dohvata sljedeće pitanje, procesira korisničke odgovore, ažurira RL agenta, i generiše finalne izvještaje.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>QuizEngine</h4>
+                    <p>Glavna klasa za upravljanje kvizom koja koordinira sve komponente kviza.</p>
+
+                    <div class="function-doc">
+                        <h4>get_next_question() -> Optional[Dict]</h4>
+                        <p>Dohvata sljedeće pitanje na osnovu selekcije RL agenta.</p>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[Dict] - Rečnik pitanja ili None ako je kviz završen.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Generiše pitanja za chunk-ove ako nisu u cache-u</li>
+                                <li>Povećava indeks pitanja</li>
+                                <li>Ažurira trenutno stanje pitanja</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>submit_answer(answer: str) -> Dict</h4>
+                        <p>Procesira korisnikov odgovor i ažurira stanje kviza.</p>
+                        <dl class="param-list">
+                            <dt>answer:</dt>
+                            <dd>Korisnikov odabrani odgovor (A, B, C, ili D)</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Dict - Rečnik rezultata sa is_correct, explanation, i ažuriranim score-om.
+                        </div>
+                        <div class="side-effects">
+                            <strong>Sporedni efekti:</strong>
+                            <ul>
+                                <li>Ažurira score ako je odgovor tačan</li>
+                                <li>Ažurira stanje RL agenta</li>
+                                <li>Snima odgovor u listu questions_answered</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- auth.py -->
+            <section id="auth-py">
+                <h3>auth.py - Authentication Module</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Rukuje JWT autentifikacijom i hash-ovanjem lozinki koristeći bcrypt. Pruža metode za hash-ovanje lozinki, verifikaciju lozinki, generisanje JWT tokena, i verifikaciju/dekodovanje tokena.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>AuthManager</h4>
+                    <p>Manager za autentifikaciju JWT tokena i hash-ovanje lozinki.</p>
+
+                    <div class="function-doc">
+                        <h4>hash_password(password: str) -> str</h4>
+                        <p>Hash-uje lozinku koristeći bcrypt algoritam.</p>
+                        <dl class="param-list">
+                            <dt>password:</dt>
+                            <dd>Plain text lozinka</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> str - Bcrypt hash-ovana lozinka kao string.
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Elegantno rukuje greškama kodiranja</li>
+                                <li>Koristi sigurno generisanje salt-a</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>verify_password(password: str, password_hash: str) -> bool</h4>
+                        <p>Verifikuje lozinku protiv hash-a.</p>
+                        <dl class="param-list">
+                            <dt>password:</dt>
+                            <dd>Plain text lozinka za verifikaciju</dd>
+                            <dt>password_hash:</dt>
+                            <dd>Bcrypt hash za poređenje</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> bool - True ako se lozinka poklapa sa hash-om, False inače.
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>generate_token(user_id: int, username: str) -> str</h4>
+                        <p>Generiše JWT token za korisničku sesiju.</p>
+                        <dl class="param-list">
+                            <dt>user_id:</dt>
+                            <dd>ID korisnika za uključivanje u token</dd>
+                            <dt>username:</dt>
+                            <dd>Korisničko ime za uključivanje u token</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> str - JWT token string sa 24-satnim istekom.
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>verify_token(token: str) -> Optional[Dict]</h4>
+                        <p>Verifikuje i dekoduje JWT token.</p>
+                        <dl class="param-list">
+                            <dt>token:</dt>
+                            <dd>JWT token string za verifikaciju</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Optional[Dict] - Payload tokena ako je validan, None ako je istekao ili nevalidan.
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Rukuje isteklim tokenima</li>
+                                <li>Rukuje nevalidnim potpisima tokena</li>
+                                <li>Loguje upozorenja za nevalidne tokene</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- auth_api.py -->
+            <section id="auth-api-py">
+                <h3>auth_api.py - Authentication API</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Integriše autentifikacionu logiku sa bazom podataka, pružajući register, login, i verify_user metode za Gradio UI.</p>
+                </div>
+
+                <div class="class-doc">
+                    <h4>AuthAPI</h4>
+                    <p>API wrapper za autentifikacione operacije.</p>
+
+                    <div class="function-doc">
+                        <h4>register(username: str, email: str, password: str, confirm_password: str) -> Tuple[bool, str, Optional[str]]</h4>
+                        <p>Registruje novog korisnika.</p>
+                        <dl class="param-list">
+                            <dt>username:</dt>
+                            <dd>Korisničko ime (minimum 3 karaktera)</dd>
+                            <dt>email:</dt>
+                            <dd>Validna email adresa</dd>
+                            <dt>password:</dt>
+                            <dd>Lozinka (minimum 6 karaktera)</dd>
+                            <dt>confirm_password:</dt>
+                            <dd>Potvrda lozinke (mora se poklapati sa lozinkom)</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Tuple[bool, str, Optional[str]] - (success, message, token).
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Validira dužinu korisničkog imena</li>
+                                <li>Validira format email adrese</li>
+                                <li>Proverava duplikate username/email</li>
+                                <li>Osigurava da se potvrda lozinke poklapa</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="function-doc">
+                        <h4>login(username: str, password: str) -> Tuple[bool, str, Optional[str], Optional[Dict]]</h4>
+                        <p>Autentifikuje korisnika i vraća JWT token.</p>
+                        <dl class="param-list">
+                            <dt>username:</dt>
+                            <dd>Korisničko ime ili email adresa</dd>
+                            <dt>password:</dt>
+                            <dd>Korisnikova lozinka</dd>
+                        </dl>
+                        <div class="returns">
+                            <strong>Povratna vrednost:</strong> Tuple[bool, str, Optional[str], Optional[Dict]] - (success, message, token, user_data).
+                        </div>
+                        <div class="edge-cases">
+                            <strong>Granični slučajevi:</strong>
+                            <ul>
+                                <li>Prihvata korisničko ime ili email za login</li>
+                                <li>Vraća generičku poruku greške zbog sigurnosti</li>
+                                <li>Elegantno rukuje nevalidnim kredencijalima</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="frontend">
+            <h2>Frontend Moduli</h2>
+
+            <!-- common.js -->
+            <section id="common-js">
+                <h3>common.js - Zajedničke JavaScript Funkcije</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Zajedničke JavaScript funkcije za sve frontend stranice, upravljanje dohvatanjem korisničkih podataka, proverama autentifikacije, prikazom korisničkog imena u navbar-u, i logout funkcionalnostima.</p>
+                    <p>Ovaj modul sadrži funkcije koje se koriste na svim stranicama aplikacije. Modul se učitava na svakoj stranici i automatski inicijalizuje zajedničke funkcionalnosti kao što su prikaz korisničkog imena i setup logout dugmeta. Modul koristi localStorage za čuvanje korisničkih podataka, što omogućava da korisnik ostane prijavljen između refresh-ova stranice.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h4>getUserData()</h4>
+                    <p>Dohvata korisničke podatke iz localStorage. Ova funkcija čita 'userData' ključ iz localStorage-a i parsira ga kao JSON. Ako podaci ne postoje ili su nevalidni, funkcija vraća null. Korisnički podaci uključuju id, username, email, total_quizzes, total_score, i average_accuracy.</p>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> Object|null - Korisnički podaci objekat ako je pronađen, null inače.
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Handluje slučajeve kada localStorage je prazan</li>
+                            <li>Handluje slučajeve kada JSON je nevalidan</li>
+                            <li>Vraća null umesto bacanja exception-a</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>checkAuth()</h4>
+                    <p>Proverava da li je korisnik autentifikovan i preusmjerava na login ako nije. Ova funkcija se poziva na svakoj zaštićenoj stranici da osigura da samo autentifikovani korisnici mogu pristupiti. Funkcija proverava da li userData postoji u localStorage-u i da li ima validan id. Ako korisnik nije autentifikovan, funkcija briše sve korisničke podatke iz localStorage-a i preusmjerava na login stranicu.</p>
+                    <div class="returns">
+                        <strong>Povratna vrednost:</strong> bool - True ako je autentifikovan, false inače (preusmjerava na login).
+                    </div>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Briše userData iz localStorage-a ako je nevalidan</li>
+                            <li>Briše userId iz localStorage-a ako je nevalidan</li>
+                            <li>Preusmjerava na login stranicu ako korisnik nije autentifikovan</li>
+                        </ul>
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Handluje slučajeve kada userData ne postoji</li>
+                            <li>Handluje slučajeve kada userData nema id polje</li>
+                            <li>Osigurava da se localStorage očisti pre redirect-a</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>loadUsername()</h4>
+                    <p>Učitava i prikazuje korisničko ime u navbar elementima.</p>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Ažurira #usernameDisplay i .username elemente</li>
+                            <li>Loguje upozorenja ako korisnički podaci nedostaju</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>handleLogout()</h4>
+                    <p>Rukuje odjavom korisnika brisanjem localStorage-a i preusmjeravanjem.</p>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Uklanja userData, userId, i selectedTheme iz localStorage-a</li>
+                            <li>Preusmjerava na login stranicu</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- auth.js -->
+            <section id="auth-js">
+                <h3>auth.js - Authentication JavaScript</h3>
+                <div class="module-info">
+                    <p><strong>Svrha:</strong> Rukuje funkcionalnostima login-a i registracije za frontend, komunicirajući sa backend API-jem.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h4>handleLogin(event)</h4>
+                    <p>Rukuje slanjem login forme korisnika.</p>
+                    <dl class="param-list">
+                        <dt>event:</dt>
+                        <dd>Form submit event (sprečen po defaultu)</dd>
+                    </dl>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Šalje POST zahtev na /api/login</li>
+                            <li>Čuva korisničke podatke u localStorage pri uspjehu</li>
+                            <li>Preusmjerava na dashboard pri uspjehu</li>
+                            <li>Prikazuje poruke greške pri neuspjehu</li>
+                        </ul>
+                    </div>
+                    <div class="edge-cases">
+                        <strong>Granični slučajevi:</strong>
+                        <ul>
+                            <li>Elegantno rukuje mrežnim greškama</li>
+                            <li>Validira strukturu backend odgovora</li>
+                            <li>Prikazuje korisnički prijateljske poruke greške</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h4>handleRegister(event)</h4>
+                    <p>Rukuje slanjem registracione forme korisnika.</p>
+                    <dl class="param-list">
+                        <dt>event:</dt>
+                        <dd>Form submit event (sprečen po defaultu)</dd>
+                    </dl>
+                    <div class="side-effects">
+                        <strong>Sporedni efekti:</strong>
+                        <ul>
+                            <li>Šalje POST zahtev na /api/register</li>
+                            <li>Čuva korisničke podatke u localStorage pri uspjehu</li>
+                            <li>Preusmjerava na dashboard pri uspjehu</li>
+                            <li>Prikazuje validacione greške</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    </div>
+    </div>
+
+ 
+</body>
+</html>
+
