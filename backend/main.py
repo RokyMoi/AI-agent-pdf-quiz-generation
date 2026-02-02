@@ -68,6 +68,21 @@ def main():
     print()
     
     try:
+        # Start background runner
+        try:
+            from background.runner import Runner
+            from infra.job_queue import JobQueue
+            from application.quiz_service import QuizService
+
+            job_queue = JobQueue()
+            quiz_service = QuizService()
+            runner = Runner(job_queue=job_queue, quiz_service=quiz_service)
+            runner.start()
+            print("✅ Background runner started")
+        except Exception as e:
+            print(f"⚠️  Ne mogu da startujem background runner: {e}")
+
+        # Launch UI (blocking)
         launch_ui(
             share=args.share,
             server_name=args.server_name,
@@ -75,9 +90,17 @@ def main():
         )
     except KeyboardInterrupt:
         print("\n\n👋 Aplikacija je zaustavljena.")
+        try:
+            runner.stop()
+        except Exception:
+            pass
         sys.exit(0)
     except Exception as e:
         print(f"\n❌ Greška pri pokretanju aplikacije: {e}")
+        try:
+            runner.stop()
+        except Exception:
+            pass
         sys.exit(1)
 
 

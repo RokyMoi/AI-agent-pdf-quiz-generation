@@ -99,6 +99,22 @@ class Database:
                 FOREIGN KEY (user_id) REFERENCES users(id)
             )
         """)
+
+        # Tabela za jobove (queue) - koristi se za background worker
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS jobs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                job_type TEXT NOT NULL,
+                payload TEXT,
+                status TEXT DEFAULT 'PENDING',
+                retries INTEGER DEFAULT 0,
+                max_retries INTEGER DEFAULT 3,
+                result TEXT,
+                last_error TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
         
         # Dodaj ip_address kolonu ako ne postoji
         try:

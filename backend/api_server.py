@@ -44,6 +44,11 @@ CORS(app)  # Enable CORS for frontend
 
 db = Database()
 auth_api = AuthAPI()
+# Service layer (thin web will call methods on this service)
+from application.quiz_service import QuizService
+quiz_service = QuizService()
+from infra.job_queue import JobQueue
+job_queue = JobQueue()
 
 # Check API key on startup
 def check_api_key():
@@ -232,148 +237,59 @@ def upload_pdf():
 
 @app.route('/api/generate_question_from_chunk', methods=['POST'])
 def generate_question_from_chunk():
-    """Generisanje jednog pitanja iz chunk-a (za PDF kviz, kao quick quiz)."""
+    """Generisanje jednog pitanja iz chunk-a (thin web: delegira na QuizService)."""
     try:
         data = request.json
         chunk = data.get('chunk')
         question_number = data.get('question_number', 1)
         difficulty = data.get('difficulty', 'medium')
-        
+
         if not chunk:
             return jsonify({'error': 'Chunk je obavezan'}), 400
-        
-        # Ensure API key is set
-        api_key = os.getenv('GOOGLE_API_KEY')
-        if not api_key:
-            default_key = "AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"
-            os.environ['GOOGLE_API_KEY'] = default_key
-            api_key = default_key
-            logger.info("Koristim default GOOGLE_API_KEY za generate_question_from_chunk")
-        
-        # Check API key
+
         try:
-            question_generator = GeminiQuestionGenerator(api_key=api_key)
-        except ValueError as e:
-            logger.error(f"API key error in generate_question_from_chunk: {e}")
-            return jsonify({'error': f'Google API key greška: {str(e)}'}), 400
-        except Exception as e:
-            logger.error(f"Error initializing Gemini in generate_question_from_chunk: {e}")
-            return jsonify({'error': f'Greška pri inicijalizaciji Gemini: {str(e)}'}), 500
-        
-        # Generate single question from chunk
-        logger.info(f"Generisanje pitanja {question_number} iz chunk-a {chunk.get('chunk_id', 'N/A')}...")
-        
-        try:
-            questions = question_generator.generate_questions_from_chunk(
-                chunk,
-                num_questions=1,  # Generate only one question
-                difficulty=difficulty
-            )
-            
-            if not questions or len(questions) == 0:
-                return jsonify({'error': 'Nije moguće generisati pitanje iz ovog chunk-a'}), 500
-            
-            question = questions[0]  # Take first question
-            question['question_number'] = question_number
-            
-            logger.info(f"Uspešno generisano pitanje {question_number}")
+            question = quiz_service.generate_question_from_chunk(chunk=chunk, difficulty=difficulty, question_number=question_number)
             return jsonify(question)
-            
         except ValueError as e:
-            # API key or permission errors
-            logger.error(f"API greška pri generisanju pitanja: {e}")
+            logger.error(f"QuizService validation error: {e}")
             return jsonify({'error': str(e)}), 400
         except Exception as e:
-            logger.error(f"Greška pri generisanju pitanja: {e}")
+            logger.error(f"Error in QuizService.generate_question_from_chunk: {e}")
             return jsonify({'error': f'Greška pri generisanju pitanja: {str(e)}'}), 500
-        
+
     except Exception as e:
         logger.error(f"Error in generate_question_from_chunk: {e}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/generate_questions', methods=['POST'])
 def generate_questions():
-    """Generisanje pitanja iz chunk-ova (legacy endpoint - koristi se za batch generisanje)."""
+    """Generisanje pitanja iz chunk-ova (thin web: delegira na QuizService)."""
     try:
         data = request.json
         chunks = data.get('chunks', [])
         num_questions = data.get('num_questions', 10)
         topic_keywords = data.get('topic_keywords', '')
-        
+
         if not chunks:
             return jsonify({'error': 'Nema chunk-ova za generisanje pitanja'}), 400
-        
-        # Ensure API key is set
-        api_key = os.getenv('GOOGLE_API_KEY')
-        if not api_key:
-            default_key = "AIzaSyCHtud1DZpBs9vPjgoXEmxLZBHDtZytuSc"
-            os.environ['GOOGLE_API_KEY'] = default_key
-            api_key = default_key
-            logger.info("Koristim default GOOGLE_API_KEY za generate_questions")
-        
-        # Check API key
+
         try:
-            question_generator = GeminiQuestionGenerator(api_key=api_key)
-        except ValueError as e:
-            logger.error(f"API key error in generate_questions: {e}")
-            return jsonify({'error': f'Google API key greška: {str(e)}'}), 400
-        except Exception as e:
-            logger.error(f"Error initializing Gemini in generate_questions: {e}")
-            return jsonify({'error': f'Greška pri inicijalizaciji Gemini: {str(e)}'}), 500
-        
-        # Initialize RL agent
-        rl_agent = RLAgent(num_chunks=len(chunks))
-        
-        # Create quiz engine
-        quiz_engine = QuizEngine(
-            chunks=chunks,
-            question_generator=question_generator,
-            rl_agent=rl_agent,
-            total_questions=num_questions
-        )
-        
-        # Generate questions
-        questions = []
-        max_attempts = min(num_questions * 2, len(chunks) * 3)  # Limit attempts
-        
-        logger.info(f"Generisanje {num_questions} pitanja iz {len(chunks)} chunk-ova...")
-        
-        for i in range(max_attempts):
-            try:
-                question = quiz_engine.get_next_question()
-                if question and question.get('question'):
-                    questions.append(question)
-                    logger.info(f"Generisano pitanje {len(questions)}/{num_questions}")
-                
-                if len(questions) >= num_questions:
-                    break
-                    
-            except ValueError as e:
-                # API key or permission errors - stop and return error
-                logger.error(f"API greška pri generisanju pitanja: {e}")
-                return jsonify({'error': str(e)}), 400
-            except Exception as e:
-                logger.warning(f"Error generating question {i+1}: {e}")
-                # Continue trying other chunks
-                continue
-        
-        if not questions:
+            questions = quiz_service.generate_questions(chunks=chunks, num_questions=num_questions, topic_keywords=topic_keywords)
+            quiz_id = None
             return jsonify({
-                'error': 'Nije moguće generisati pitanja. Proverite API key, PDF sadržaj i pokušajte ponovo.'
-            }), 500
-        
-        # Save quiz to database (if user is authenticated)
-        quiz_id = None
-        # TODO: Get user from token if provided
-        
-        return jsonify({
-            'success': True,
-            'quiz_id': quiz_id,
-            'questions': questions,
-            'num_questions': len(questions),
-            'message': f'Uspešno generisano {len(questions)} pitanja.'
-        })
-        
+                'success': True,
+                'quiz_id': quiz_id,
+                'questions': questions,
+                'num_questions': len(questions),
+                'message': f'Uspešno generisano {len(questions)} pitanja.'
+            })
+        except ValueError as e:
+            logger.error(f"QuizService validation error: {e}")
+            return jsonify({'error': str(e)}), 400
+        except Exception as e:
+            logger.error(f"Error in QuizService.generate_questions: {e}")
+            return jsonify({'error': 'Nije moguće generisati pitanja. Proverite API key, PDF sadržaj i pokušajte ponovo.'}), 500
+
     except Exception as e:
         logger.error(f"Error generating questions: {e}")
         return jsonify({'error': str(e)}), 500
@@ -650,7 +566,24 @@ def quiz_results(quiz_id):
         
         # Get results
         results = db.get_quiz_results(quiz_id)
-        
+
+
+@app.route('/api/enqueue_generate_questions', methods=['POST'])
+def enqueue_generate_questions():
+    """Enqueue job for background generation of questions from supplied chunks."""
+    try:
+        data = request.json
+        chunks = data.get('chunks', [])
+        num_questions = int(data.get('num_questions', 10))
+
+        if not chunks:
+            return jsonify({'error': 'Nema chunk-ova za generisanje pitanja'}), 400
+
+        job_id = job_queue.create_job('generate_next_question', payload={'chunks': chunks, 'num_questions': num_questions})
+        return jsonify({'success': True, 'job_id': job_id, 'message': 'Job queued for background processing.'}), 202
+    except Exception as e:
+        logger.error(f"Error enqueueing job: {e}")
+        return jsonify({'error': str(e)}), 500        
         # Calculate stats
         total_users = len(set(r['user_id'] for r in results))
         total_attempts = len(results)
