@@ -68,5 +68,35 @@ class QuizService:
             questions = self.generate_questions(chunks=chunks, num_questions=num_questions)
             # return result for job store
             return {'questions': questions}
+        elif job_type == 'parse_and_chunk':
+            # payload expected: {'tmp_path': str, 'chunk_size': int, 'topic_keywords': str, 'quiz_title': str, 'num_questions': int, 'user_id': int}
+            from .upload_service import UploadService
+            from infra.job_queue import JobQueue
+
+            tmp_path = payload.get('tmp_path')
+            chunk_size = int(payload.get('chunk_size', 1500))
+            topic_keywords = payload.get('topic_keywords', '')
+            quiz_title = payload.get('quiz_title', 'Untitled Quiz')
+            num_questions = int(payload.get('num_questions', 10))
+            user_id = payload.get('user_id')
+
+            upload_service = UploadService()
+            result = upload_service.parse_and_chunk_pdf(
+                tmp_path=tmp_path,
+                chunk_size=chunk_size,
+                topic_keywords=topic_keywords,
+                quiz_title=quiz_title,
+                num_questions=num_questions,
+                user_id=user_id
+            )
+
+            # Optionally enqueue generate questions job for the created quiz
+            chunks = result.get('chunks', [])
+            if chunks:
+                q = JobQueue()
+                gen_job_id = q.create_job('generate_next_question', payload={'chunks': chunks, 'num_questions': num_questions})
+                result['enqueued_generate_job_id'] = gen_job_id
+
+            return result
         else:
             raise NotImplementedError(f'Unknown job type: {job_type}')

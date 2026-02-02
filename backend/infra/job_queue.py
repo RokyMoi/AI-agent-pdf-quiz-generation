@@ -83,7 +83,11 @@ class JobQueue:
             retries = row[0] or 0
             allowed = row[1] or max_retries
             if retries >= allowed:
+                # Exhausted retries -> mark failed
                 cursor.execute("UPDATE jobs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", (JobStatus.FAILED.value, job_id))
+            else:
+                # Schedule retry: set back to PENDING so it can be retried by runner
+                cursor.execute("UPDATE jobs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", (JobStatus.PENDING.value, job_id))
         else:
             cursor.execute("UPDATE jobs SET status = ?, last_error = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", (JobStatus.FAILED.value, error, job_id))
         conn.commit()

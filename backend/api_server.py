@@ -99,138 +99,35 @@ def health_check():
 
 @app.route('/api/upload_pdf', methods=['POST'])
 def upload_pdf():
-    """Upload i parsiranje PDF-a sa real-time progress updates."""
+    """Upload PDF: thin web layer - sačuvaj temp file i enqueue job za parsiranje i chunking."""
     try:
         if 'pdf_file' not in request.files:
             return jsonify({'error': 'PDF fajl nije priložen'}), 400
-        
+
         pdf_file = request.files['pdf_file']
         quiz_title = request.form.get('quiz_title', 'Untitled Quiz')
         num_questions = int(request.form.get('num_questions', 10))
         chunk_size = int(request.form.get('chunk_size', 1500))
         topic_keywords = request.form.get('topic_keywords', '')
-        
+        user_id = request.form.get('user_id')
+
         # Save uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
             pdf_file.save(tmp_file.name)
             tmp_path = tmp_file.name
-        
-        # Create progress queue for streaming updates
-        progress_queue = queue.Queue()
-        
-        def progress_callback(current_page, total_pages, status):
-            """Callback za progres parsiranja."""
-            progress_data = {
-                'type': 'progress',
-                'current_page': current_page,
-                'total_pages': total_pages,
-                'progress_pct': int((current_page / total_pages * 100)) if total_pages > 0 else 0,
-                'status': status,
-                'timestamp': time.time()
-            }
-            progress_queue.put(progress_data)
-        
-        def parse_pdf():
-            """Parsira PDF u pozadini i šalje progres."""
-            try:
-                # Parse PDF with progress callback
-                parser = PDFParser(progress_callback=progress_callback)
-                text = parser.extract_text(tmp_path)
-                
-                if not text or len(text.strip()) < 100:
-                    progress_queue.put({
-                        'type': 'error',
-                        'message': 'PDF je prazan ili nije mogao biti parsiran'
-                    })
-                    return
-                
-                # Chunking progress callback
-                def chunking_progress_callback(current_chunk, total_chunks, status):
-                    """Callback za progres chunking-a."""
-                    progress_data = {
-                        'type': 'progress',
-                        'stage': 'chunking',
-                        'current_chunk': current_chunk,
-                        'total_chunks': total_chunks,
-                        'progress_pct': int((current_chunk / total_chunks * 100)) if total_chunks > 0 else 0,
-                        'status': status,
-                        'timestamp': time.time()
-                    }
-                    progress_queue.put(progress_data)
-                
-                chunker = TextChunker(chunk_size=chunk_size, chunk_overlap=200, progress_callback=chunking_progress_callback)
-                chunks = chunker.chunk_text(text, method='words')
-                
-                # Filter by topic if keywords provided
-                if topic_keywords:
-                    keywords = [kw.strip() for kw in topic_keywords.split(',')]
-                    chunks = chunker.filter_chunks_by_topic(chunks, keywords)
-                
-                if not chunks:
-                    progress_queue.put({
-                        'type': 'error',
-                        'message': 'Nisu pronađeni relevantni segmenti u PDF-u'
-                    })
-                    return
-                
-                # Clean up temp file
-                os.unlink(tmp_path)
-                
-                # Final result
-                progress_queue.put({
-                    'type': 'complete',
-                    'success': True,
-                    'chunks': chunks,
-                    'num_chunks': len(chunks),
-                    'message': f'PDF uspešno parsiran. Pronađeno {len(chunks)} segmenata.'
-                })
-                
-            except Exception as e:
-                # Clean up temp file on error
-                if os.path.exists(tmp_path):
-                    os.unlink(tmp_path)
-                progress_queue.put({
-                    'type': 'error',
-                    'message': str(e)
-                })
-        
-        # Start parsing in background thread
-        parse_thread = threading.Thread(target=parse_pdf)
-        parse_thread.daemon = True
-        parse_thread.start()
-        
-        # Stream progress updates
-        def generate():
-            while True:
-                try:
-                    # Get progress update (with timeout)
-                    item = progress_queue.get(timeout=1)
-                    
-                    if item['type'] == 'complete':
-                        yield f"data: {json_lib.dumps(item)}\n\n"
-                        break
-                    elif item['type'] == 'error':
-                        yield f"data: {json_lib.dumps(item)}\n\n"
-                        break
-                    else:
-                        yield f"data: {json_lib.dumps(item)}\n\n"
-                        
-                except queue.Empty:
-                    # Send heartbeat to keep connection alive
-                    yield f"data: {json_lib.dumps({'type': 'heartbeat'})}\n\n"
-                except Exception as e:
-                    yield f"data: {json_lib.dumps({'type': 'error', 'message': str(e)})}\n\n"
-                    break
-        
-        return Response(
-            stream_with_context(generate()),
-            mimetype='text/event-stream',
-            headers={
-                'Cache-Control': 'no-cache',
-                'X-Accel-Buffering': 'no'
-            }
-        )
-            
+
+        # Enqueue background job to parse and chunk PDF
+        job_id = job_queue.create_job('parse_and_chunk', payload={
+            'tmp_path': tmp_path,
+            'chunk_size': chunk_size,
+            'topic_keywords': topic_keywords,
+            'quiz_title': quiz_title,
+            'num_questions': num_questions,
+            'user_id': int(user_id) if user_id else None
+        })
+
+        return jsonify({'success': True, 'job_id': job_id, 'message': 'PDF uploaded and job queued for parsing.'}), 202
+
     except Exception as e:
         logger.error(f"Error uploading PDF: {e}")
         return jsonify({'error': str(e)}), 500
@@ -583,6 +480,26 @@ def enqueue_generate_questions():
         return jsonify({'success': True, 'job_id': job_id, 'message': 'Job queued for background processing.'}), 202
     except Exception as e:
         logger.error(f"Error enqueueing job: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/job/<int:job_id>', methods=['GET'])
+def get_job_status(job_id):
+    """Vraća status i rezultat job-a."""
+    try:
+        job = job_queue.get_job(job_id)
+        if not job:
+            return jsonify({'error': 'Job nije pronađen'}), 404
+        return jsonify({
+            'id': job.id,
+            'job_type': job.job_type,
+            'status': job.status.value,
+            'retries': job.retries,
+            'result': job.result,
+            'last_error': job.last_error
+        })
+    except Exception as e:
+        logger.error(f"Error getting job status: {e}")
         return jsonify({'error': str(e)}), 500        
         # Calculate stats
         total_users = len(set(r['user_id'] for r in results))

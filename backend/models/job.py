@@ -55,7 +55,17 @@ class Job:
             job.result = json.loads(row['result']) if row['result'] else {}
         except Exception:
             job.result = {}
-        job.last_error = row.get('last_error')
-        job.created_at = row.get('created_at')
-        job.updated_at = row.get('updated_at')
+        # sqlite3.Row does not have .get(), so use mapping access with fallback
+        try:
+            job.last_error = row['last_error']
+        except Exception:
+            job.last_error = None
+        try:
+            job.created_at = row['created_at']
+        except Exception:
+            job.created_at = None
+        try:
+            job.updated_at = row['updated_at']
+        except Exception:
+            job.updated_at = None
         return job
