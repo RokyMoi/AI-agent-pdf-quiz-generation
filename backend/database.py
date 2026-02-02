@@ -21,14 +21,27 @@ class Database:
     Klasa za upravljanje bazom podataka.
     """
     
-    def __init__(self, db_path: str = "quizmaster.db"):
+    def __init__(self, db_path: str = None):
         """
         Inicijalizuje bazu podataka.
+        Ako `db_path` nije proslijeđen, koristi se lokalna datoteka unutar `backend` foldera
+        (konfigurisano preko `QUIZMASTER_DB` env var ako je postavljen).
         
         Args:
             db_path: Putanja do SQLite baze
         """
-        self.db_path = db_path
+        if db_path:
+            self.db_path = db_path
+        else:
+            import os
+            # Allow override via environment variable
+            env_path = os.environ.get('QUIZMASTER_DB')
+            if env_path:
+                self.db_path = env_path
+            else:
+                # Default path: backend/quizmaster.db
+                base_dir = os.path.dirname(__file__)
+                self.db_path = os.path.join(base_dir, 'quizmaster.db')
         self.init_database()
     
     def get_connection(self):

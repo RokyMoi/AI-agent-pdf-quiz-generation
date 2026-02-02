@@ -1,2 +1,15 @@
 /FitQuiz.pptx
 /pdf_fitquiz_docs.md
+
+# Ignore database files
+quizmaster.db
+backend/quizmaster.db
+*.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Editor
+.vscode/
+.idea/
