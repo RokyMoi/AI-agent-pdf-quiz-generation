@@ -113,9 +113,18 @@ Prilozi: mapa promjena (kratko)
   - `backend/models/job.py`  (Job model)
   - `backend/infra/job_queue.py`  (DB-backed queue)
   - `backend/background/runner.py` (Runner loop + tick)
+  - `backend/background/manager.py` (Singleton runner manager za health)
   - `backend/application/quiz_service.py` (servisni sloj za poslovnu logiku)
+  - `backend/application/upload_service.py` (upload parsing & chunking)
   - `backend/main.py` (start runner pri pokretanju)
-  - `backend/api_server.py` (refaktorisani endpointi i `enqueue_generate_questions`)
+  - `backend/api/api_server.py` (refaktorisani endpointi, `enqueue_generate_questions`, job status i worker health endpoint)
 
+Struktura i organizacija fajlova (nova)
+- `backend/core/` — core library: `pdf_parser.py`, `chunking.py`, `quiz_engine.py`, `question_generator.py`, `rl_agent.py` (poslovna logika i helperi)
+- `backend/llm/` — LLM klijenti i embeddings: `google_gemini_generator.py`, `embeddings.py`
+- `backend/services/` — pomoćne usluge: `charts.py`, `export_results.py`
+- `backend/auth/` — autentifikacija: `auth.py`, `auth_api.py`
+- `backend/background/` — runner i manager: `runner.py`, `manager.py`
+- `backend/api/` — REST API server: `api_server.py`
 
 -- Kraj dokumenta --
