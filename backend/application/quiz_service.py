@@ -4,9 +4,9 @@ Sadrži jasne entry-point funkcije koje web sloj poziva.
 """
 
 import logging
-from google_gemini_generator import GeminiQuestionGenerator
-from rl_agent import RLAgent
-from quiz_engine import QuizEngine
+from llm.google_gemini_generator import GeminiQuestionGenerator
+from core.rl_agent import RLAgent
+from core.quiz_engine import QuizEngine
 
 logger = logging.getLogger(__name__)
 

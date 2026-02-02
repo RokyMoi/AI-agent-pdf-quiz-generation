@@ -11,10 +11,10 @@ from dotenv import load_dotenv
 
 # Import sa auth ili bez auth
 try:
-    from ui_with_auth import launch_ui
+    from ui.ui_with_auth import launch_ui
     HAS_AUTH = True
 except ImportError:
-    from ui import launch_ui
+    from ui.ui import launch_ui
     HAS_AUTH = False
 
 # Učitaj environment varijable iz .env fajla (ako postoji i nije korumpiran)
@@ -76,8 +76,10 @@ def main():
 
             job_queue = JobQueue()
             quiz_service = QuizService()
+            from background.manager import set_runner
             runner = Runner(job_queue=job_queue, quiz_service=quiz_service)
             runner.start()
+            set_runner(runner)
             print("✅ Background runner started")
         except Exception as e:
             print(f"⚠️  Ne mogu da startujem background runner: {e}")

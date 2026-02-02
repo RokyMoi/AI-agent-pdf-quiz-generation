@@ -7,7 +7,7 @@ API endpoints za autentifikaciju integrisane u Gradio.
 from typing import Optional, Tuple, Dict
 import logging
 from database import Database
-from auth import AuthManager
+from .auth import AuthManager
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

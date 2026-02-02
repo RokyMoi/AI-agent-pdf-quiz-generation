@@ -143,7 +143,7 @@ class EmbeddingManager:
         """
         if not self.model:
             # Fallback na keyword matching
-            from chunking import TextChunker
+            from core.chunking import TextChunker
             chunker = TextChunker()
             return chunker.filter_chunks_by_topic(chunks, topic_keywords)
         
@@ -173,7 +173,7 @@ class EmbeddingManager:
         except Exception as e:
             logger.error(f"Greška pri filtriranju: {e}")
             # Fallback
-            from chunking import TextChunker
+            from core.chunking import TextChunker
             chunker = TextChunker()
             return chunker.filter_chunks_by_topic(chunks, topic_keywords)
 

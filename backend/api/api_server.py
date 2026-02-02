@@ -22,13 +22,13 @@ from pathlib import Path
 backend_dir = Path(__file__).parent
 sys.path.insert(0, str(backend_dir))
 
-from pdf_parser import PDFParser
-from chunking import TextChunker
-from google_gemini_generator import GeminiQuestionGenerator
-from rl_agent import RLAgent
-from quiz_engine import QuizEngine
+from core.pdf_parser import PDFParser
+from core.chunking import TextChunker
+from llm.google_gemini_generator import GeminiQuestionGenerator
+from core.rl_agent import RLAgent
+from core.quiz_engine import QuizEngine
 from database import Database
-from auth_api import AuthAPI
+from auth.auth_api import AuthAPI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -500,6 +500,31 @@ def get_job_status(job_id):
         })
     except Exception as e:
         logger.error(f"Error getting job status: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/worker/health', methods=['GET'])
+def worker_health():
+    """Vraća status background worker-a i osnovne statistike job queue-a."""
+    try:
+        from background.manager import get_runner
+        runner = get_runner()
+        runner_status = 'running' if runner and getattr(runner, '_thread', None) and runner._thread.is_alive() else 'stopped'
+        pending = job_queue.count_jobs(status='PENDING')
+        in_progress = job_queue.count_jobs(status='IN_PROGRESS')
+        failed = job_queue.count_jobs(status='FAILED')
+        done = job_queue.count_jobs(status='DONE')
+        return jsonify({
+            'runner_status': runner_status,
+            'jobs': {
+                'pending': pending,
+                'in_progress': in_progress,
+                'failed': failed,
+                'done': done
+            }
+        })
+    except Exception as e:
+        logger.error(f"Error getting worker health: {e}")
         return jsonify({'error': str(e)}), 500        
         # Calculate stats
         total_users = len(set(r['user_id'] for r in results))

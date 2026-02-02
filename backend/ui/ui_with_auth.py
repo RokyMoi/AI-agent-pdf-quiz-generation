@@ -11,17 +11,17 @@ import logging
 import json
 from datetime import datetime
 
-from pdf_parser import PDFParser
-from chunking import TextChunker
-from google_gemini_generator import GeminiQuestionGenerator
-from rl_agent import RLAgent
-from quiz_engine import QuizEngine
+from core.pdf_parser import PDFParser
+from core.chunking import TextChunker
+from llm.google_gemini_generator import GeminiQuestionGenerator
+from core.rl_agent import RLAgent
+from core.quiz_engine import QuizEngine
 from database import Database
-from auth_api import AuthAPI
+from auth.auth_api import AuthAPI
 try:
-    from export_results import ResultExporter
-    from charts import ChartGenerator
-    from embeddings import EmbeddingManager
+    from services.export_results import ResultExporter
+    from services.charts import ChartGenerator
+    from llm.embeddings import EmbeddingManager
     HAS_EXTRAS = True
 except ImportError:
     HAS_EXTRAS = False

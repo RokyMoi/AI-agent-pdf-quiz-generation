@@ -9,11 +9,11 @@ import os
 from typing import Optional, Tuple
 import logging
 
-from pdf_parser import PDFParser
-from chunking import TextChunker
-from question_generator import QuestionGenerator
-from rl_agent import RLAgent
-from quiz_engine import QuizEngine
+from core.pdf_parser import PDFParser
+from core.chunking import TextChunker
+from core.question_generator import QuestionGenerator
+from core.rl_agent import RLAgent
+from core.quiz_engine import QuizEngine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

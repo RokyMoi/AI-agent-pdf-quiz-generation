@@ -101,3 +101,14 @@ class JobQueue:
         row = cursor.fetchone()
         conn.close()
         return Job.from_row(row)
+
+    def count_jobs(self, status: str = None) -> int:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        if status:
+            cursor.execute("SELECT COUNT(1) FROM jobs WHERE status = ?", (status,))
+        else:
+            cursor.execute("SELECT COUNT(1) FROM jobs")
+        row = cursor.fetchone()
+        conn.close()
+        return int(row[0]) if row else 0

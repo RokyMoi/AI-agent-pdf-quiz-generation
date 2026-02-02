@@ -5,8 +5,8 @@ Funkcija `parse_and_chunk_pdf` parsira PDF, chunk-uje, te kreira `quiz` u bazi (
 
 import logging
 import os
-from pdf_parser import PDFParser
-from chunking import TextChunker
+from core.pdf_parser import PDFParser
+from core.chunking import TextChunker
 from database import Database
 
 logger = logging.getLogger(__name__)
