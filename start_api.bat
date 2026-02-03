@@ -8,6 +8,6 @@ echo Cekanje 3 sekunde da se browser otvori...
 timeout /t 3 /nobreak >nul
 echo.
 cd backend
-python api_server.py
+python api\api_server.py
 pause
 

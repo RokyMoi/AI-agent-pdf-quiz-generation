@@ -1,5 +1,5 @@
 #!/bin/bash
 echo "Pokretanje REST API servera..."
 cd backend
-python api_server.py
+python api/api_server.py
 

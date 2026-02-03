@@ -772,5 +772,22 @@ if __name__ == '__main__':
     print("\n🚀 Pokretanje REST API servera...")
     print("   API dostupan na: http://127.0.0.1:5000")
     print("   Health check: http://127.0.0.1:5000/api/health\n")
+
+    # Start background runner when running API directly
+    try:
+        from infra.job_queue import JobQueue
+        from application.quiz_service import QuizService
+        from background.runner import Runner
+        from background.manager import set_runner
+
+        job_queue = JobQueue()
+        quiz_service = QuizService()
+        runner = Runner(job_queue=job_queue, quiz_service=quiz_service)
+        runner.start()
+        set_runner(runner)
+        print("✅ Background runner started from api_server")
+    except Exception as e:
+        print(f"⚠️  Ne mogu da startujem background runner iz api_server: {e}")
+
     app.run(host='127.0.0.1', port=5000, debug=True)
 
